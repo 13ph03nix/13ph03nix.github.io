@@ -308,6 +308,197 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2016/05/11/SFTP-configuration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/11/SFTP-configuration/" itemprop="url">SFTP 配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-11T01:21:50+08:00">
+                2016-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  469
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<blockquote>
+<p>今天本来打算研究下怎么在服务器上搭建一个安全的 FTP 服务器的,想来想去还是算了吧，在 SFTP 面前，FTP 就是来逗逼的，直接从 SFTP 下手。</p>
+</blockquote>
+<p>首先呢，SFTP 是工作在 SSH 上的，而SSH是一种提供安全性的协议,这保证了 SFTP 的安全性!</p>
+<h1 id="安装-OpenSSH"><a href="#安装-OpenSSH" class="headerlink" title="安装 OpenSSH"></a>安装 OpenSSH</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure>
+<h1 id="处理权限问题"><a href="#处理权限问题" class="headerlink" title="处理权限问题"></a>处理权限问题</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mkdir /home/sftp  sftp的根目录</span><br><span class="line">$ sudo mkdir /home/sftp/shared 共享目录，用于普通用户上传文件</span><br><span class="line">$ sudo addgroup sftp_user 创建一般用户的用户组(---一般用户只能使用SFTP传输文件，无法使用SSH登陆服务器---)方便统一管理一般用户</span><br><span class="line">$ sudo addgroup ssh_user  比一般用户权限高一级的用户的用户组,该组下的用户除了可以使用SFTP传输文件，还可以使用SSH登陆服务器</span><br><span class="line">$ sudo adduser -M jail 创建一般账户，强制不创建用户主文件夹</span><br><span class="line">$ sudo usermod -G sftp_user -s /bin/<span class="literal">false</span> jail 将jail这个一般账户加入一般用户的用户组,其中/bin/<span class="literal">false</span>是最严格的禁止login选项，一切服务都不能用</span><br><span class="line">$ sudo adduse -M jinx 创建特权用户,强制不创建用户主文件夹</span><br><span class="line">$ sudo usermod -a -G ssh_user jinx 同上，-a表示不从其他用户组移除</span><br><span class="line">$ sudo chown jinx:sftp_user /home/sftp/shared 设置共享目录权限，目录所有者为jinx这个特权用户,同时允许sftp_user组内的一般用户访问</span><br><span class="line">$ sudo chmod 770 /home/sftp/shared 设置共享目录的读写权限</span><br></pre></td></tr></table></figure>
+<h1 id="修改-SSH-配置"><a href="#修改-SSH-配置" class="headerlink" title="修改 SSH 配置"></a>修改 SSH 配置</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<p>在文件末尾添加以下内容<br>AllowGroups ssh_user sftp_user<br>Match Group sftp_user<br>ChrootDirectory /home/sftp<br>AllowTcpForwarding no<br>X11Forwarding no<br>ForceCommand internal-sftp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo reboot now 重启，让配置生效</span><br></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sftp jinx@localhost </span><br><span class="line">$ sftp jail@localhost</span><br></pre></td></tr></table></figure>
+<p>enjoy it now! thanks for you read!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+  </div>
+
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2016/05/01/Sql-injection-access-to-system-privileges/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1645,7 +1836,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1656,7 +1847,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1667,7 +1858,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1741,7 +1932,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">46.2k</span>
+    <span title="Site words total count">47.7k</span>
   
 </div>
 
