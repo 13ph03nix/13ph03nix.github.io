@@ -306,6 +306,196 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2016/03/06/Accelerated-maven-builds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/06/Accelerated-maven-builds/" itemprop="url">加速 maven 的下载速度</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-06T12:53:59+08:00">
+                2016-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/develop/" itemprop="url" rel="index">
+                    <span itemprop="name">develop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  382
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<blockquote>
+<p><code>maven</code> 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的让人好无奈。加速姿势如下</p>
+</blockquote>
+<h1 id="更换中央仓库"><a href="#更换中央仓库" class="headerlink" title="更换中央仓库"></a>更换中央仓库</h1><p>之前的 <code>oschina</code> 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。<br>设置方法为打开 maven 的配置文件(~/.m2/setting.xml或其它)，在 setting.xml 文件的 mirrors 标签内添加以下内容。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用海外代理加速"><a href="#使用海外代理加速" class="headerlink" title="使用海外代理加速"></a>使用海外代理加速</h1><p>代理设置方法请参考：<a href="/2017/03/06/Elegant-over-the-wall-posture/" title="优雅的翻墙姿势">优雅的翻墙姿势</a><br>设置方法为打开 maven 的配置文件(~/.m2/setting.xml 或其它)，在 setting.xml 文件的 proxies 标签内添加以下内容(请根据实际情况补充标签内配置信息）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">proxy</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span><span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">active</span>&gt;</span><span class="tag">&lt;/<span class="name">active</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">protocol</span>&gt;</span><span class="tag">&lt;/<span class="name">protocol</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span><span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">host</span>&gt;</span><span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">port</span>&gt;</span><span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">nonProxyHosts</span>&gt;</span><span class="tag">&lt;/<span class="name">nonProxyHosts</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">proxy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>参数介绍</p>
+<p>id：代理的名称<br>active：表示该代理是否激活<br>protocol：代理协议<br>username：当代理需要认证时的用户名<br>password：当代理需要认证时的密码<br>host：代理的IP地址<br>port：代理的端口号<br>nonProxyHost：指定不需要使用代理的主机，可不设置。如果有多个，用 | 分隔<br>（备注：如果代理不需要用户认证，username 和 password　两个节点可注释掉）</p>
+<p>为确保配置文件生效，可使用 mvn -gs ~/.m2/setting.xml，享受风一般的速度吧～</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+  </div>
+
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2015/11/18/getting-started-with-kail-linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -716,7 +906,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -805,7 +995,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">53.2k</span>
+    <span title="Site words total count">53.9k</span>
   
 </div>
 
