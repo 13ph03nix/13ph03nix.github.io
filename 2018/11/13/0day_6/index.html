@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="raspberrypi3B,proxy," />
+  <meta name="keywords" content="information disclosure," />
 
 
 
@@ -79,17 +79,15 @@
 
 
 
-<meta name="keywords" content="raspberrypi3B,proxy">
+<meta name="keywords" content="information disclosure">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用树莓派打造科学上网神器">
-<meta property="og:url" content="https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/index.html">
+<meta property="og:title" content="100 cve plans &#x2F; XXX (RESERVED)">
+<meta property="og:url" content="https://0x43434343.com/2018/11/13/0day_6/index.html">
 <meta property="og:site_name" content="fenix&#39;s blog">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
-<meta property="og:updated_time" content="2019-05-01T15:44:52.505Z">
+<meta property="og:updated_time" content="2019-06-03T04:52:56.386Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用树莓派打造科学上网神器">
-<meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
+<meta name="twitter:title" content="100 cve plans &#x2F; XXX (RESERVED)">
 
 
 
@@ -119,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/"/>
+  <link rel="canonical" href="https://0x43434343.com/2018/11/13/0day_6/"/>
 
 
 
 
 
-  <title>用树莓派打造科学上网神器 | fenix's blog</title>
+  <title>100 cve plans / XXX (RESERVED) | fenix's blog</title>
   
 
 
@@ -306,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2018/11/13/0day_6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="fenix">
@@ -323,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">用树莓派打造科学上网神器</h1>
+          <h1 class="post-title" itemprop="name headline">100 cve plans / XXX (RESERVED)</h1>
         
 
         <div class="post-meta">
@@ -335,8 +333,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-24T10:58:58+08:00">
-                2017-01-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-13T15:00:00+08:00">
+                2018-11-13
               </time>
             
 
@@ -358,8 +356,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/0day/" itemprop="url" rel="index">
+                    <span itemprop="name">0day</span>
                   </a>
                 </span>
 
@@ -389,7 +387,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  681
+                  680
                 </span>
               
 
@@ -405,7 +403,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3
+                  4
                 </span>
               
             </div>
@@ -426,45 +424,20 @@
       
 
       
-        <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec" alt=""></p>
-<a id="more"></a>
-<blockquote>
-<p>感谢老婆大人给买的最新版 <code>RaspberryPi</code>，超级给力。</p>
-</blockquote>
-<h1 id="硬件配备-仅供参考"><a href="#硬件配备-仅供参考" class="headerlink" title="硬件配备(仅供参考)"></a>硬件配备(仅供参考)</h1><ul>
-<li>Raspberry Pi 3 Model B</li>
-<li>16GB TF卡、读卡器</li>
-<li>散热片两张（铜铝均可）</li>
-<li>支持 AP 模式的 USB 无线网卡</li>
-<li>A computer</li>
-</ul>
-<h1 id="Raspberry-Pi-刷-kali"><a href="#Raspberry-Pi-刷-kali" class="headerlink" title="Raspberry Pi 刷 kali"></a>Raspberry Pi 刷 kali</h1><p>一直有黑客的情怀，本着某种不可告人的目的，果断刷了 <a href="https://images.offensive-security.com/arm-images/kali-2.1.2-rpi2.img.xz" target="_blank" rel="noopener">kali</a><br>，下载镜像解压后利用 <a href="http://shumeipai.nxez.com/2013/08/31/usb-image-tool.html" target="_blank" rel="noopener">USB Image Tool</a> 写入即可。</p>
-<h1 id="如何连接"><a href="#如何连接" class="headerlink" title="如何连接"></a>如何连接</h1><p>此处有N种情形（kali 初始认证，username: root, password: toor)</p>
-<ul>
-<li>假如你正好有一台显示屏，那再好不过了，将树莓派和显示屏连接，将其当成一般的 computer 使用即可</li>
-<li>无显示屏,有路由器，将树莓派接在路由器的 LAN 接口，获得 Pi 的 ip 然后 ssh</li>
-<li>无显示屏，无路由器,将TF卡接入 computer 打开 Boot 磁盘下的 cmdline.txt 文件在文末追加</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ip = 192.168.5.1</span><br></pre></td></tr></table></figure>
-<p>然后电脑直连树莓派,利用上面的ip登陆<br>登陆成功后，需对系统进行一些设置以方便以后连接，请参考 <a href="http://imchao.wang/2014/01/02/make-you-raspberrypi-auto-connect-to-wifi/" target="_blank" rel="noopener">让你的树莓派自动连接wifi</a></p>
-<h1 id="扩展TF卡分区表-可选"><a href="#扩展TF卡分区表-可选" class="headerlink" title="扩展TF卡分区表(可选)"></a><a href="https://m.baidu.com/from=1012585r/bd_page_type=1/ssid=0/uid=0/pu=usm%400%2Csz%40320_1001%2Cta%40iphone_2_5.1_3_537/baiduid=7C012C833E952C3B7245608A666BEDCC/w=0_10_/t=iphone/l=3/tc?ref=www_iphone&amp;lid=10345154769178963455&amp;order=2&amp;fm=alop&amp;tj=www_normal_2_0_10_title&amp;vit=osres&amp;m=8&amp;srd=1&amp;cltj=cloud_title&amp;asres=1&amp;title=%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%AD%E7%9A%84SD%E5%8D%A1%E7%A9%BA%E9%97%B4-Linux%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B&amp;dict=30&amp;w_qd=IlPT2AEptyoA_yk5z3Yb7xG5ITZVhnwov6wYhBjVyecsKBoyNzDrJlCHoq&amp;sec=18318&amp;di=cb7cc20e2125b655&amp;bdenc=1&amp;tch=124.0.268.316.0.0&amp;nsrc=IlPT2AEptyoA_yixCFOxXnANedT62v3IEQGG_yJR0CummUSefLrgHtkfEFXzKXWDC9Cb9j4KtBc1rizfQjm&amp;eqid=8f915f739b59b000100000065884572c&amp;wd=&amp;clk_info=%7B%22srcid%22%3A%221599%22%2C%22tplname%22%3A%22www_normal%22%2C%22t%22%3A1485068118085%2C%22xpath%22%3A%22div-a-h3%22%7D" target="_blank" rel="noopener">扩展TF卡分区表</a>(可选)</h1><h1 id="打造中继路由器"><a href="#打造中继路由器" class="headerlink" title="打造中继路由器"></a>打造中继路由器</h1><p>肯定得插上第二块无线适配器，你懂得</p>
-<h2 id="设置树莓的-DHCP-服务"><a href="#设置树莓的-DHCP-服务" class="headerlink" title="设置树莓的 DHCP 服务"></a>设置树莓的 DHCP 服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install dnsmasq</span><br><span class="line">$ sudo vim /etc/dnsmasq.conf</span><br></pre></td></tr></table></figure>
-<p>更改如下几段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listen-address=127.0.0.1,192.168.2.1</span><br><span class="line">dhcp-range=192.68.2.50,192.168.2.200,12h</span><br></pre></td></tr></table></figure>
-<p>然后运行以下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service dnsmasq restart</span><br></pre></td></tr></table></figure>
-<h2 id="开启包转发"><a href="#开启包转发" class="headerlink" title="开启包转发"></a>开启包转发</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo sed -i <span class="string">'s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g'</span> /etc/sysctl.conf</span><br><span class="line">$ sudo sysctl -p</span><br><span class="line">$ sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE</span><br></pre></td></tr></table></figure>
-<h2 id="设置第二块适配器的IP"><a href="#设置第二块适配器的IP" class="headerlink" title="设置第二块适配器的IP"></a>设置第二块适配器的IP</h2><p>编辑 /etc/network/interface,更改 wlan1 的配置如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto wlan1</span><br><span class="line">iface wlan1 inet static</span><br><span class="line">    address 192.168.2.1</span><br><span class="line">    netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
-<h2 id="安装并开启hostapd"><a href="#安装并开启hostapd" class="headerlink" title="安装并开启hostapd"></a>安装并开启hostapd</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install hostapd</span><br><span class="line">$ sudo vim /etc/hostapd/hostapd.conf</span><br></pre></td></tr></table></figure>
-<p>文件内容如下</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">interface</span>=wlan1</span><br><span class="line"><span class="attr">driver</span>=nl80211</span><br><span class="line"><span class="attr">ssid</span>=<span class="string">'yourSsid'</span></span><br><span class="line"><span class="attr">hw_mode</span>=g</span><br><span class="line"><span class="attr">channel</span>=<span class="number">6</span></span><br><span class="line"><span class="attr">macaddr_acl</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">auth_algs</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">ignore_broadcast_ssid</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">wpa</span>=<span class="number">2</span></span><br><span class="line"><span class="attr">wpa_passphrase</span>=<span class="string">'yourPassword'</span></span><br><span class="line"><span class="attr">wpa_key_mgmt</span>=WPA-PSK</span><br><span class="line"><span class="attr">wpa_pairwise</span>=TKIP</span><br><span class="line"><span class="attr">rsn_pairwise</span>=CCMP</span><br></pre></td></tr></table></figure>
-<p>之后运行 <code>sudo hostapd -d /etc/hostapd/hostapd/conf</code> 来测试，如有 bug 自行 google 调试。<br>调试成功后编辑 /etc/default/hostapd，更改 DAEMON_CONF=”/etc/hostapd/hostapd.conf”,然后运行 sudo service hostapd start 正式启动 wifi 热点</p>
-<h1 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h1><p>参照 <a href="http://www.jianshu.com/p/6b8c8d30a40a" target="_blank" rel="noopener">linux全局代理redsocks+shadowsocks</a><br>之后学习 <a href="http://www.cnblogs.com/metoy/p/4320813.html" target="_blank" rel="noopener">iptables详解</a>可将需要翻墙的流量通过 NAT 重定向到 redsocks，请自定义 iptables 规则。</p>
-<h1 id="保存防火墙规则及配置开机自启服务"><a href="#保存防火墙规则及配置开机自启服务" class="headerlink" title="保存防火墙规则及配置开机自启服务"></a>保存防火墙规则及配置开机自启服务</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install iptables-persistent</span><br><span class="line">$ sudo service netfilter-persistent save</span><br></pre></td></tr></table></figure>
-<p>编辑 /etc/rc.local<br>写入以下内容</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo service dnsmasq restart</span><br><span class="line">sudo sysctl -p</span><br><span class="line">sudo service hostapd start</span><br><span class="line">sudo service redsocks start</span><br><span class="line">iptables-restore &lt; /etc/iptables/rules.v4</span><br></pre></td></tr></table></figure>
-
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<div id="security">
+  <div class="input-container">
+  <input type="password" class="form-control" id="pass" placeholder="the content has been encrypted, enter the password to read." />
+    <label for="pass">the content has been encrypted, enter the password to read.</label>
+    <div class="bottom-line"></div>
+  </div>
+</div>
+<div id="decryptionError" style="display: none;">Incorrect Password!</div>
+<div id="noContentError" style="display: none;">No content to display!</div>
+<div id="encrypt-blog" style="display:none">
+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
+</div>
+<script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
       
     </div>
     
@@ -490,16 +463,16 @@
 
         <li class="post-copyright-link">
           <strong>本文标题：</strong>
-          <a href="https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/" title="用树莓派打造科学上网神器">用树莓派打造科学上网神器</a>
+          <a href="https://0x43434343.com/2018/11/13/0day_6/" title="100 cve plans / XXX (RESERVED)">100 cve plans / XXX (RESERVED)</a>
         </li>
 
         <li class="post-copyright-link">
           <strong>本文链接：</strong>
-          <a href="https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/" title="用树莓派打造科学上网神器">https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/</a>
+          <a href="https://0x43434343.com/2018/11/13/0day_6/" title="100 cve plans / XXX (RESERVED)">https://0x43434343.com/2018/11/13/0day_6/</a>
         </li>
 
         <li class="post-copyright-date">
-            <strong>发布时间：</strong>2017年1月24日 - 10时01分
+            <strong>发布时间：</strong>2018年11月13日 - 15时11分
         </li>  
 
         <li class="post-copyright-license">
@@ -514,9 +487,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/raspberrypi3B/" rel="tag"># raspberrypi3B</a>
-          
-            <a href="/tags/proxy/" rel="tag"># proxy</a>
+            <a href="/tags/information-disclosure/" rel="tag"># information disclosure</a>
           
         </div>
       
@@ -529,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/08/Caddy-nginx-https-reverse-proxy/" rel="next" title="Caddy 联合 nginx 开启 https 反向代理">
-                <i class="fa fa-chevron-left"></i> Caddy 联合 nginx 开启 https 反向代理
+              <a href="/2018/11/13/0day_2/" rel="next" title="100 cve plans / cve-2018-19243 (RESERVED)">
+                <i class="fa fa-chevron-left"></i> 100 cve plans / cve-2018-19243 (RESERVED)
               </a>
             
           </div>
@@ -539,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/06/Elegant-over-the-wall-posture/" rel="prev" title="优雅的翻墙姿势">
-                优雅的翻墙姿势 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/26/android-series-phone-get-root-privileges/" rel="prev" title="Android 系列手机 root 方法">
+                Android 系列手机 root 方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -604,17 +575,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -694,22 +656,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件配备-仅供参考"><span class="nav-number">1.</span> <span class="nav-text">硬件配备(仅供参考)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Raspberry-Pi-刷-kali"><span class="nav-number">2.</span> <span class="nav-text">Raspberry Pi 刷 kali</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何连接"><span class="nav-number">3.</span> <span class="nav-text">如何连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展TF卡分区表-可选"><span class="nav-number">4.</span> <span class="nav-text">扩展TF卡分区表(可选)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打造中继路由器"><span class="nav-number">5.</span> <span class="nav-text">打造中继路由器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置树莓的-DHCP-服务"><span class="nav-number">5.1.</span> <span class="nav-text">设置树莓的 DHCP 服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启包转发"><span class="nav-number">5.2.</span> <span class="nav-text">开启包转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置第二块适配器的IP"><span class="nav-number">5.3.</span> <span class="nav-text">设置第二块适配器的IP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装并开启hostapd"><span class="nav-number">5.4.</span> <span class="nav-text">安装并开启hostapd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#科学上网"><span class="nav-number">6.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#保存防火墙规则及配置开机自启服务"><span class="nav-number">7.</span> <span class="nav-text">保存防火墙规则及配置开机自启服务</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -883,9 +829,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/';
-          this.page.identifier = '2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/';
-          this.page.title = '用树莓派打造科学上网神器';
+          this.page.url = 'https://0x43434343.com/2018/11/13/0day_6/';
+          this.page.identifier = '2018/11/13/0day_6/';
+          this.page.title = '100 cve plans / XXX (RESERVED)';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fenixns.disqus.com/embed.js';
