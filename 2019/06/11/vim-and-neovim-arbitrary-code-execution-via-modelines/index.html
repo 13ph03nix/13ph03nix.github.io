@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="0zti2a3T69n1U7TLwUhRVYhNLB-zZXfCbFPUZIl_2B0" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vim,code execution," />
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="vim,code execution">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim&#x2F;Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）">
+<meta property="og:url" content="https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/index.html">
+<meta property="og:site_name" content="fenix&#39;s blog">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/566eee2cb134336ec556d359ca83c568e8b7e6bb">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/dcbf60eb43a335bce469f6802e1d55cff10b53ce">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/48a78406c188f225718549134f5688c79761bd12">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/16819a03aef043f88fb0c5b6b460aa66841067c7">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a2b1589ee77b7101706d457f6a6cc0f905688b37">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/f8b90fff8b661f277e3f92104c05b68a2b3143c4">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/4a26ad99cc01bffea0d5d46a485cce6c7327062d">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/76b95da39d748ae1676bd8224f9021a00ab67c04">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/42685e222d61fc2aa27d940511fc6a75437c7e44">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a481705d60ec7e7c7ba9188670cd080e75444ca9">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/0adeeab4f5a1053cd2b42374bde7893a83b089dc">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/ea840db659d26b228499cc8a4314f715abc218c4">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a5281ca8c4cfe7e7cd8c45d2dd1ef82c12bc56b7">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/00955f7b65151fc38de80e1e731fbc638c072327">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/69e73bbc797986c08e7ed85eeade02af90585b7b">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/29c11ae5c210cc3bba948364da0fa70a51dff871">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/393559bdab530e7967b01962806285550c1b101e">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/ad0a9a9f6c5a6bb3917e0dfa8ce5334419ed9093">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/89df816eb2e769172b9e05a22643555cc6ccf36f">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/b36f17b3e738de0f09cfebe111fdca26a7d52069">
+<meta property="og:updated_time" content="2019-06-14T10:22:06.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim&#x2F;Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）">
+<meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/566eee2cb134336ec556d359ca83c568e8b7e6bb">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/"/>
+
+
+
+
+
+  <title>Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735） | fenix's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fenix's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-11T18:00:00+08:00">
+                2019-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/漏洞分析/" itemprop="url" rel="index">
+                    <span itemprop="name">漏洞分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1,338
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/566eee2cb134336ec556d359ca83c568e8b7e6bb" alt=""></p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Vim 是从 vi 发展出来的一个文本编辑器。代码补全、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用，和 Emacs 并列成为类 Unix 系统用戶最喜欢的文本编辑器。Neovim 是一个基于 vim 源代码的重构项目。 </p>
+<p>2019 年 06 月 04 日，Vim &amp; neovim 被曝出任意代码执行漏洞。攻击者通过诱使受害者使用 vim 或者 neovim 打开一个精心制作的文件，可以在目标机器上执行任意命令。 </p>
+<p>该漏洞是由于启用了 modeline 模式导致的，Vim &amp; neovim 历史上也多次曝出和 modeline 相关的漏洞。</p>
+<p>原作者已经分析的很清楚了，本文权当总结一下，顺便对历史曝出的多个漏洞做一次完整的分析。（在 vim 环境下，neovim 类似）</p>
+<h1 id="modeline-详解"><a href="#modeline-详解" class="headerlink" title="modeline 详解"></a>modeline 详解</h1><p>既然都是和 modeline 相关的漏洞，那就有必要知道 modeline 是什么。</p>
+<p>vim 一共有 4 种模式：正常模式、插入模式、命令模式、可视模式。</p>
+<p>在正常模式中，按下 <code>:</code> 键，就可以进入命令模式。在命令模式中可以执行一些输入并执行一些 vim 或插件提供的指令，就像在 shell 里一样。这些指令包括设置环境、文件操作、调用某个功能、执行命令等等。例如设置不显示行号：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/dcbf60eb43a335bce469f6802e1d55cff10b53ce" alt=""></p>
+<p>如果有很多偏好设置，每次打开文件都手动设置就会显得很繁琐，这时候 <code>.vimrc</code> 就派上用场了，在启动 vim 时，当前用户根目录下的 .vimrc 文件会被自动加载。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/48a78406c188f225718549134f5688c79761bd12" alt=""></p>
+<p>.vimrc 中的设置会对打开的所有文件生效，不便于对单个文件作个性化设置，modeline 应运而生。</p>
+<p>vim 的 modeline 可以让你针对每个文件进行文件级别的设置，这些设置是覆盖当前用户的 .vimrc 中的设置的。vim 默认关闭了 modeline，在 .vimrc 末尾追加 <code>set modeline</code> 即可打开。</p>
+<p>如果 modeline 打开，vim 在打开文件时会解析文件开头及末尾符合一定格式的设置行。</p>
+<p>格式一：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/16819a03aef043f88fb0c5b6b460aa66841067c7" alt=""></p>
+<p>格式二：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a2b1589ee77b7101706d457f6a6cc0f905688b37" alt=""></p>
+<p>为了安全考虑，在 modeline 的设置中只支持 set 命令。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/f8b90fff8b661f277e3f92104c05b68a2b3143c4" alt=""></p>
+<p>特殊的，foldexpr，formatexpr，includeexpr，indentexpr，statusline，foldtext 等选项的值可以是一个表达式，如果选项是在 modeline 中设置，表达式在沙箱中执行。沙箱实质上就是对表达式所能实现的功能做了限制，如在沙箱中不能执行 shell 命令、不能读写文件、不能修改缓冲区等等，如下：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/4a26ad99cc01bffea0d5d46a485cce6c7327062d" alt=""></p>
+<p>vim 对于沙箱的实现也很简单。</p>
+<p>沙箱检查函数 check_secure()：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/76b95da39d748ae1676bd8224f9021a00ab67c04" alt=""></p>
+<p>在 libcall、luaeval 等危险指令的开头进行沙箱检查，如果发现在沙箱中调用，直接 return 掉。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/42685e222d61fc2aa27d940511fc6a75437c7e44" alt=""></p>
+<p>历史曝出的几个 rce 漏洞中，CVE-2002-1377 和 CVE-2019-12735 都是由于存在部分指令没有检查沙箱，导致在 modeline 模式中被滥用从而任意命令执行。下面将一一分析。</p>
+<h1 id="CVE-2002-1377"><a href="#CVE-2002-1377" class="headerlink" title="CVE-2002-1377"></a>CVE-2002-1377</h1><p>2002 年曝出的 vim 任意代码执行漏洞，影响 6.0、6.1 版本。太过古老，环境难以重现，简单说下原理。PoC 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/* vim:set foldmethod=expr: */</span><br><span class="line">/* vim:set foldexpr=confirm(libcall(&quot;/lib/libc.so.6&quot;,&quot;system&quot;,&quot;/bin/ls&quot;),&quot;ms_sux&quot;): */</span><br></pre></td></tr></table></figure>
+<p>利用 libcall 指令调用 libc 库中的 system 函数实现任意命令执行。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a481705d60ec7e7c7ba9188670cd080e75444ca9" alt=""></p>
+<p>现在添加了沙箱检查，modeline 下已经用不了 libcall 了：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/0adeeab4f5a1053cd2b42374bde7893a83b089dc" alt=""></p>
+<h1 id="CVE-2016-1248"><a href="#CVE-2016-1248" class="headerlink" title="CVE-2016-1248"></a>CVE-2016-1248</h1><p>8.0.0056 之前的 vim 未正确验证 filetype、syntax 、keymap 选项的值，受害者在 modeline 开启下打开特制的文件，则可能导致执行任意代码。</p>
+<p>从 github 克隆代码，checkout 到 v8.0.0055 分支，编译安装。.vimrc 的配置如下：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/ea840db659d26b228499cc8a4314f715abc218c4" alt=""></p>
+<p>验证 PoC ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">00000000: 2f2f 2076 696d 3a20 7365 7420 6674 3d00  // vim: <span class="built_in">set</span> ft=.</span><br><span class="line">00000010: 2165 6368 6f5c 2070 776e 6564 203a 200a  !<span class="built_in">echo</span>\ pwned : .</span><br></pre></td></tr></table></figure>
+<p><code>set verbose=20</code>开启所有日志，看下调用链：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/a5281ca8c4cfe7e7cd8c45d2dd1ef82c12bc56b7" alt=""></p>
+<p>autocommand 即“自动命令”，在发生某些事件时自动执行，类似于钩子函数。</p>
+<p>比如我们在命令模式中输入 <code>:set syntax=python</code>,  vim 就会在相应目录中寻找和 python syntax 相关的 vmscript 并加载。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/00955f7b65151fc38de80e1e731fbc638c072327" alt=""></p>
+<p>如果我们在 modeline 中设置了 filetype 或者 syntax，会执行  <code>au! FileType *        exe &quot;set syntax=&quot; . expand(&quot;&lt;amatch&gt;&quot;)</code> 自动完成上述过程。首先删除所有和 FileType 相关联的自动命令，然后调用 exe （即 execute） 执行 <code>set syntax=filetype</code>。execute 用于执行一个表达式字符串，由于未对 filetype 过滤，造成了命令注入。</p>
+<p>相关代码在 /usr/local/share/vim/vim80/syntax/syntax.vim:</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/69e73bbc797986c08e7ed85eeade02af90585b7b" alt=""></p>
+<p>patch 8.0.0056 增加了对名称的校验。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/29c11ae5c210cc3bba948364da0fa70a51dff871" alt=""></p>
+<h1 id="CVE-2019-12735"><a href="#CVE-2019-12735" class="headerlink" title="CVE-2019-12735"></a>CVE-2019-12735</h1><p>最近刚曝出来，影响 Vim &lt; 8.1.1365，Neovim &lt; 0.3.6。和 CVE-2002-1377 原理类似，找到了一个新的绕过沙箱执行命令的点。source 指定的定义如下：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/393559bdab530e7967b01962806285550c1b101e" alt=""></p>
+<p><code>:so! filepath</code>  可以从一个文件加载 vim 命令。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/ad0a9a9f6c5a6bb3917e0dfa8ce5334419ed9093" alt=""></p>
+<p>构造 PoC，将待执行的命令放在 text 部分，<code>so! %</code> 加载当前文件。</p>
+<p> [text]{white}{vi:|vim:|ex:}[white]{options}</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/89df816eb2e769172b9e05a22643555cc6ccf36f" alt=""></p>
+<p>补丁对 source 指令添加了沙箱检查。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vim-and-neovim-arbitrary-code-execution-via-modelines/b36f17b3e738de0f09cfebe111fdca26a7d52069" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Windows 记事本都任意代码执行了，Vim 怎么能被比下去 … 漏洞无处不在，谨慎打开任何来历不明文件。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md" target="_blank" rel="noopener">https://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md</a></p>
+<p><a href="https://github.com/vim/vim/commit/d0b5138ba4bccff8a744c99836041ef6322ed39a" target="_blank" rel="noopener">https://github.com/vim/vim/commit/d0b5138ba4bccff8a744c99836041ef6322ed39a</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+      <ul class="post-copyright">
+         <li class="post-copyright-link">
+          <strong>本文作者：</strong>
+          <a href="/" title="欢迎访问 fenix 的个人博客">fenix</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文标题：</strong>
+          <a href="https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/" title="Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）">Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/" title="Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）">https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/</a>
+        </li>
+
+        <li class="post-copyright-date">
+            <strong>发布时间：</strong>2019年6月11日 - 18时06分
+        </li>  
+
+        <li class="post-copyright-license">
+          <strong>版权声明： </strong>
+          本文由 fenix 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="license" target="_blank">保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+      </ul>
+    
+  </div>
+
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vim/" rel="tag"># vim</a>
+          
+            <a href="/tags/code-execution/" rel="tag"># code execution</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/03/0day_4/" rel="next" title="100 cve plans / XXX (RESERVED)">
+                <i class="fa fa-chevron-left"></i> 100 cve plans / XXX (RESERVED)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="fenix" />
+            
+              <p class="site-author-name" itemprop="name">fenix</p>
+              <p class="site-description motion-element" itemprop="description">For you, to be a better self.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fenixns" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:abcnsxyz@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#modeline-详解"><span class="nav-number">2.</span> <span class="nav-text">modeline 详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVE-2002-1377"><span class="nav-number">3.</span> <span class="nav-text">CVE-2002-1377</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVE-2016-1248"><span class="nav-number">4.</span> <span class="nav-text">CVE-2016-1248</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVE-2019-12735"><span class="nav-number">5.</span> <span class="nav-text">CVE-2019-12735</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">7.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fenix</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">57.4k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/';
+          this.page.identifier = '2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/';
+          this.page.title = 'Vim/Neovim 基于 modeline 的多个任意代码执行漏洞分析（CVE-2002-1377、CVE-2016-1248、CVE-2019-12735）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fenixns.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
