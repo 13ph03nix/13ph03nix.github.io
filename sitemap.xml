@@ -2,58 +2,107 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/</loc>
+    <loc>https://0x43434343.com/2017/12/14/Vivotek-remote-stack-overflow-exp-research/</loc>
     
-    <lastmod>2019-06-14T10:22:06.443Z</lastmod>
+    <lastmod>2019-08-16T08:20:24.334Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2019/03/02/Mikrotik_routeros_smb_service_fuzz-based_vulnerability_mining_and_cve-2018-7445_patch_analysis/</loc>
+    
+    <lastmod>2019-08-16T08:19:36.633Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2018/12/17/getting-started-with-sdr/</loc>
+    
+    <lastmod>2019-08-16T08:19:04.382Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2018/09/27/Blueborne-RCE-CVE_2017_0781-on-Android/</loc>
+    
+    <lastmod>2019-08-16T08:18:51.281Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2019/04/25/Android_privilege_escalation_through_cve_2017_8890/</loc>
+    
+    <lastmod>2019-08-16T08:18:43.329Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_6/</loc>
     
-    <lastmod>2019-06-03T04:52:56.386Z</lastmod>
+    <lastmod>2019-08-16T08:18:34.527Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/03/13/0day_5/</loc>
     
-    <lastmod>2019-06-03T04:31:19.778Z</lastmod>
+    <lastmod>2019-08-16T08:18:28.256Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/06/03/0day_4/</loc>
     
-    <lastmod>2019-06-03T03:27:05.525Z</lastmod>
+    <lastmod>2019-08-16T08:18:22.428Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/05/21/0day_3/</loc>
     
-    <lastmod>2019-05-21T10:10:39.324Z</lastmod>
+    <lastmod>2019-08-16T08:18:18.542Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_2/</loc>
     
-    <lastmod>2019-05-17T10:09:24.836Z</lastmod>
+    <lastmod>2019-08-16T08:18:14.055Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_1/</loc>
     
-    <lastmod>2019-05-17T10:03:30.552Z</lastmod>
+    <lastmod>2019-08-16T08:18:03.615Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_0/</loc>
     
-    <lastmod>2019-05-17T10:01:29.749Z</lastmod>
+    <lastmod>2019-08-16T08:17:56.107Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2016/05/14/the-letter-to-Joe/</loc>
+    
+    <lastmod>2019-08-16T08:17:51.001Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2017/12/11/uniview_nvr_authorized_rce/</loc>
+    
+    <lastmod>2019-08-16T08:17:43.284Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/</loc>
+    
+    <lastmod>2019-06-14T10:22:06.443Z</lastmod>
     
   </url>
   
@@ -79,27 +128,6 @@
   </url>
   
   <url>
-    <loc>https://0x43434343.com/2019/03/02/Mikrotik_routeros_smb_service_fuzz-based_vulnerability_mining_and_cve-2018-7445_patch_analysis/</loc>
-    
-    <lastmod>2019-05-02T03:16:39.807Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2017/12/11/uniview_nvr_authorized_rce/</loc>
-    
-    <lastmod>2019-05-02T02:30:13.823Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2018/12/17/getting-started-with-sdr/</loc>
-    
-    <lastmod>2019-05-02T02:04:14.491Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://0x43434343.com/2018/07/16/NEO-Coolcam_webcam_login_bypass_and_multi_rce_vulnerabilities/</loc>
     
     <lastmod>2019-05-01T16:30:03.822Z</lastmod>
@@ -117,20 +145,6 @@
     <loc>https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/</loc>
     
     <lastmod>2019-05-01T15:44:52.505Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2017/12/14/Vivotek-remote-stack-overflow-exp-research/</loc>
-    
-    <lastmod>2019-05-01T15:37:25.498Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2016/05/14/the-letter-to-Joe/</loc>
-    
-    <lastmod>2019-05-01T15:18:54.200Z</lastmod>
     
   </url>
   
@@ -222,20 +236,6 @@
     <loc>https://0x43434343.com/2016/11/08/Caddy-nginx-https-reverse-proxy/</loc>
     
     <lastmod>2019-05-01T14:09:35.270Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2018/09/27/Blueborne-RCE-CVE_2017_0781-on-Android/</loc>
-    
-    <lastmod>2019-05-01T14:07:43.681Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2019/04/25/Android_privilege_escalation_through_cve_2017_8890/</loc>
-    
-    <lastmod>2019-05-01T13:41:19.526Z</lastmod>
     
   </url>
   
