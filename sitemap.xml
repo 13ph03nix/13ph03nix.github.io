@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://0x43434343.com/2016/05/14/the-letter-to-Joe/</loc>
+    
+    <lastmod>2019-10-22T07:50:31.472Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2019/10/29/girl_ctf_project_1_write_up/</loc>
+    
+    <lastmod>2019-10-22T07:50:31.471Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2017/12/17/getting-started-with-mac/</loc>
+    
+    <lastmod>2019-10-22T07:50:31.470Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://0x43434343.com/2017/12/14/Vivotek-remote-stack-overflow-exp-research/</loc>
     
     <lastmod>2019-08-16T08:20:24.000Z</lastmod>
@@ -233,27 +254,6 @@
   </url>
   
   <url>
-    <loc>https://0x43434343.com/2016/04/06/repair-grub/</loc>
-    
-    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/links/index.html</loc>
-    
-    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2016/05/11/SFTP-configuration/</loc>
-    
-    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://0x43434343.com/2016/03/06/Accelerated-sbt-builds/</loc>
     
     <lastmod>2019-03-14T14:05:47.000Z</lastmod>
@@ -268,7 +268,7 @@
   </url>
   
   <url>
-    <loc>https://0x43434343.com/categories/index.html</loc>
+    <loc>https://0x43434343.com/index.html</loc>
     
     <lastmod>2019-03-14T14:05:47.000Z</lastmod>
     
@@ -282,7 +282,28 @@
   </url>
   
   <url>
-    <loc>https://0x43434343.com/index.html</loc>
+    <loc>https://0x43434343.com/2016/05/11/SFTP-configuration/</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/categories/index.html</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/links/index.html</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2016/04/06/repair-grub/</loc>
     
     <lastmod>2019-03-14T14:05:47.000Z</lastmod>
     
