@@ -2,310 +2,289 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://0x43434343.com/2019/10/29/girl_ctf_project_1_write_up/</loc>
-    
-    <lastmod>2019-08-29T14:10:40.984Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://0x43434343.com/2017/12/14/Vivotek-remote-stack-overflow-exp-research/</loc>
     
-    <lastmod>2019-08-16T08:20:24.334Z</lastmod>
+    <lastmod>2019-08-16T08:20:24.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/03/02/Mikrotik_routeros_smb_service_fuzz-based_vulnerability_mining_and_cve-2018-7445_patch_analysis/</loc>
     
-    <lastmod>2019-08-16T08:19:36.633Z</lastmod>
+    <lastmod>2019-08-16T08:19:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/12/17/getting-started-with-sdr/</loc>
     
-    <lastmod>2019-08-16T08:19:04.382Z</lastmod>
+    <lastmod>2019-08-16T08:19:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/09/27/Blueborne-RCE-CVE_2017_0781-on-Android/</loc>
     
-    <lastmod>2019-08-16T08:18:51.281Z</lastmod>
+    <lastmod>2019-08-16T08:18:51.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/04/25/Android_privilege_escalation_through_cve_2017_8890/</loc>
     
-    <lastmod>2019-08-16T08:18:43.329Z</lastmod>
+    <lastmod>2019-08-16T08:18:43.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_6/</loc>
     
-    <lastmod>2019-08-16T08:18:34.527Z</lastmod>
+    <lastmod>2019-08-16T08:18:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/03/13/0day_5/</loc>
     
-    <lastmod>2019-08-16T08:18:28.256Z</lastmod>
+    <lastmod>2019-08-16T08:18:28.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/06/03/0day_4/</loc>
     
-    <lastmod>2019-08-16T08:18:22.428Z</lastmod>
+    <lastmod>2019-08-16T08:18:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/05/21/0day_3/</loc>
     
-    <lastmod>2019-08-16T08:18:18.542Z</lastmod>
+    <lastmod>2019-08-16T08:18:18.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_2/</loc>
     
-    <lastmod>2019-08-16T08:18:14.055Z</lastmod>
+    <lastmod>2019-08-16T08:18:14.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_1/</loc>
     
-    <lastmod>2019-08-16T08:18:03.615Z</lastmod>
+    <lastmod>2019-08-16T08:18:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/13/0day_0/</loc>
     
-    <lastmod>2019-08-16T08:17:56.107Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2016/05/14/the-letter-to-Joe/</loc>
-    
-    <lastmod>2019-08-16T08:17:51.001Z</lastmod>
+    <lastmod>2019-08-16T08:17:56.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/12/11/uniview_nvr_authorized_rce/</loc>
     
-    <lastmod>2019-08-16T08:17:43.284Z</lastmod>
+    <lastmod>2019-08-16T08:17:43.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2019/06/11/vim-and-neovim-arbitrary-code-execution-via-modelines/</loc>
     
-    <lastmod>2019-06-14T10:22:06.443Z</lastmod>
+    <lastmod>2019-06-14T10:22:06.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/about/index.html</loc>
     
-    <lastmod>2019-05-17T03:49:22.617Z</lastmod>
+    <lastmod>2019-05-17T03:49:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/08/07/the-tutorial-of-exploting-ip-cameras/</loc>
     
-    <lastmod>2019-05-04T08:01:28.914Z</lastmod>
+    <lastmod>2019-05-04T08:01:28.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/07/16/NEO-Coolcam_webcam_login_bypass_and_multi_rce_vulnerabilities/</loc>
     
-    <lastmod>2019-05-01T16:30:03.822Z</lastmod>
+    <lastmod>2019-05-01T16:30:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com//404.html</loc>
     
-    <lastmod>2019-05-01T15:50:21.420Z</lastmod>
+    <lastmod>2019-05-01T15:50:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/01/24/Raspberry-Pi-3-Model-B-build-a-scientific-Internet-router/</loc>
     
-    <lastmod>2019-05-01T15:44:52.505Z</lastmod>
+    <lastmod>2019-05-01T15:44:52.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/05/01/Sql-injection-access-to-system-privileges/</loc>
     
-    <lastmod>2019-05-01T15:17:31.349Z</lastmod>
+    <lastmod>2019-05-01T15:17:31.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/05/10/shiyanbar-CTF-Web-WriteUP/</loc>
     
-    <lastmod>2019-05-01T15:16:22.397Z</lastmod>
+    <lastmod>2019-05-01T15:16:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2015/11/11/Network-penetration/</loc>
     
-    <lastmod>2019-05-01T14:56:08.696Z</lastmod>
+    <lastmod>2019-05-01T14:56:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/07/14/linux-terminal-recording/</loc>
     
-    <lastmod>2019-05-01T14:46:27.426Z</lastmod>
+    <lastmod>2019-05-01T14:46:27.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/12/29/Huawei-HG532-Series-Routers-Remote-Command-Execution/</loc>
     
-    <lastmod>2019-05-01T14:45:13.906Z</lastmod>
+    <lastmod>2019-05-01T14:45:13.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/01/02/getting-started-with-Triton/</loc>
     
-    <lastmod>2019-05-01T14:32:45.003Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2017/12/17/getting-started-with-mac/</loc>
-    
-    <lastmod>2019-05-01T14:30:19.073Z</lastmod>
+    <lastmod>2019-05-01T14:32:45.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2015/11/18/getting-started-with-kail-linux/</loc>
     
-    <lastmod>2019-05-01T14:26:42.098Z</lastmod>
+    <lastmod>2019-05-01T14:26:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/11/10/get-started-with-Raspberry-pi/</loc>
     
-    <lastmod>2019-05-01T14:23:53.082Z</lastmod>
+    <lastmod>2019-05-01T14:23:53.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/04/15/EXPLOITING-BUFFER-OVERFLOWS-ON-X86-ARCHITECTURES/</loc>
     
-    <lastmod>2019-05-01T14:22:23.383Z</lastmod>
+    <lastmod>2019-05-01T14:22:23.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/02/01/EXPLOITING-BUFFER-OVERFLOWS-ON-MIPS-ARCHITECTURES/</loc>
     
-    <lastmod>2019-05-01T14:18:07.253Z</lastmod>
+    <lastmod>2019-05-01T14:18:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2017/03/06/Elegant-over-the-wall-posture/</loc>
     
-    <lastmod>2019-05-01T14:12:07.628Z</lastmod>
+    <lastmod>2019-05-01T14:12:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/11/08/Caddy-nginx-https-reverse-proxy/</loc>
     
-    <lastmod>2019-05-01T14:09:35.270Z</lastmod>
+    <lastmod>2019-05-01T14:09:35.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2018/11/26/android-series-phone-get-root-privileges/</loc>
     
-    <lastmod>2019-05-01T13:09:46.709Z</lastmod>
+    <lastmod>2019-05-01T13:09:46.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/03/06/Accelerated-maven-builds/</loc>
     
-    <lastmod>2019-05-01T13:09:07.705Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/categories/index.html</loc>
-    
-    <lastmod>2019-03-14T14:05:47.575Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/links/index.html</loc>
-    
-    <lastmod>2019-03-14T14:05:47.572Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/index.html</loc>
-    
-    <lastmod>2019-03-14T14:05:47.571Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/tags/index.html</loc>
-    
-    <lastmod>2019-03-14T14:05:47.570Z</lastmod>
+    <lastmod>2019-05-01T13:09:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/04/06/repair-grub/</loc>
     
-    <lastmod>2019-03-14T14:05:47.521Z</lastmod>
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://0x43434343.com/2016/03/06/Accelerated-sbt-builds/</loc>
+    <loc>https://0x43434343.com/links/index.html</loc>
     
-    <lastmod>2019-03-14T14:05:47.475Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x43434343.com/2016/04/06/googleDrive-on-linux/</loc>
-    
-    <lastmod>2019-03-14T14:05:47.474Z</lastmod>
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://0x43434343.com/2016/05/11/SFTP-configuration/</loc>
     
-    <lastmod>2019-03-14T14:05:47.463Z</lastmod>
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2016/03/06/Accelerated-sbt-builds/</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/2016/04/06/googleDrive-on-linux/</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/categories/index.html</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/tags/index.html</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x43434343.com/index.html</loc>
+    
+    <lastmod>2019-03-14T14:05:47.000Z</lastmod>
     
   </url>
   
