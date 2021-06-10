@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/0081e0d77bb4d35313a80ab78d2947b4f74df030">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/9f9a95f9eb6b8c86f2f6446abf1181aa9b2c7c94">
-<meta property="og:updated_time" content="2021-06-10T13:08:42.936Z">
+<meta property="og:updated_time" content="2021-06-10T13:12:52.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊 Synology NAS Audio Station 套件未授权 RCE 调试及 EXP 构造">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8">
@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1,220
+                  1,207
                 </span>
               
 
@@ -440,7 +440,7 @@
         <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8" alt=""></p>
 <a id="more"></a>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>群晖科技（Synology）自始便专注于打造高效能、可靠、功能丰富且绿色环保 NAS 服务器，是全球少数几家以单纯的提供网络存储解决方案获得世界认同的华人企业<a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_21_05" title="Synology 安全公告" target="_blank" rel="noopener">【1】</a>。</p>
+<p>群晖科技（Synology）自始便专注于打造高效能、可靠、功能丰富且绿色环保 NAS 服务器，是全球少数几家以单纯的提供网络存储解决方案获得世界认同的华人企业<a href="https://www.synology.com/" title="Synology 官网" target="_blank" rel="noopener">【1】</a>。</p>
 </blockquote>
 <p>2021 年 5 月 27 日，HITB 2021（阿姆斯特丹）会议上分享了 Synology NAS 的多个漏洞，Synology Calendar、Media Server、Audio Station 等套件中的漏洞可通过 Web 服务入口远程利用。Audio Station 套件的漏洞成因为 <code>audiotransfer.cgi</code> 存在缓冲区溢出，远程攻击者可构造特殊数据包，然后利用该漏洞以 root 权限在目标设备执行任意命令。</p>
 <p>Synology 在产品安全性上还是很负责的，对于安全漏洞提供最高达 <code>10000$</code> 的赏金，近几年公开的漏洞中严重并且有详情的也不多，比如之前的《CVE-2017-11151 - Synology Photo Station Unauthenticated Remote Code Execution》 <a href="https://www.seebug.org/vuldb/ssvid-96331" title="Synology Photo Station Unauthenticated Remote Code Execution" target="_blank" rel="noopener">【2】</a>。</p>
@@ -482,8 +482,6 @@
 <p><a href="https://www.seebug.org/vuldb/ssvid-96331" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-96331</a></p>
 <p>【3】: ZoomEye 网络空间搜索引擎</p>
 <p><a href="https://www.zoomeye.org/searchResult?q=app%3A%22Synology%20NAS%20storage-misc%20httpd%22" target="_blank" rel="noopener">https://www.zoomeye.org/searchResult?q=app%3A%22Synology%20NAS%20storage-misc%20httpd%22</a></p>
-<p>【4】: Seebug 漏洞收录</p>
-<p><a href="https://www.seebug.org/vuldb/ssvid-99270" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-99270</a></p>
 
       
     </div>
@@ -758,7 +756,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">88.0k</span>
+    <span title="Site words total count">87.6k</span>
   
 </div>
 
