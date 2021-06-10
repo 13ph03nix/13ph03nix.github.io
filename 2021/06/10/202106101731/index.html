@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/0081e0d77bb4d35313a80ab78d2947b4f74df030">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/9f9a95f9eb6b8c86f2f6446abf1181aa9b2c7c94">
-<meta property="og:updated_time" content="2021-06-10T10:09:56.268Z">
+<meta property="og:updated_time" content="2021-06-10T13:08:42.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊 Synology NAS Audio Station 套件未授权 RCE 调试及 EXP 构造">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8">
@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1,206
+                  1,220
                 </span>
               
 
@@ -440,9 +440,8 @@
         <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8" alt=""></p>
 <a id="more"></a>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>群晖科技（Synology）自始便专注于打造高效能、可靠、功能丰富且绿色环保 NAS 服务器，是全球少数几家以单纯的提供网络存储解决方案获得世界认同的华人企业。</p>
+<p>群晖科技（Synology）自始便专注于打造高效能、可靠、功能丰富且绿色环保 NAS 服务器，是全球少数几家以单纯的提供网络存储解决方案获得世界认同的华人企业<a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_21_05" title="Synology 安全公告" target="_blank" rel="noopener">【1】</a>。</p>
 </blockquote>
-<p>2021 年 2 月 23 日，Synology 官方发布安全公告<a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_21_05" title="Synology 安全公告" target="_blank" rel="noopener">【1】</a>，修复了 Audio Station 套件中的一个认证远程代码执行漏洞。</p>
 <p>2021 年 5 月 27 日，HITB 2021（阿姆斯特丹）会议上分享了 Synology NAS 的多个漏洞，Synology Calendar、Media Server、Audio Station 等套件中的漏洞可通过 Web 服务入口远程利用。Audio Station 套件的漏洞成因为 <code>audiotransfer.cgi</code> 存在缓冲区溢出，远程攻击者可构造特殊数据包，然后利用该漏洞以 root 权限在目标设备执行任意命令。</p>
 <p>Synology 在产品安全性上还是很负责的，对于安全漏洞提供最高达 <code>10000$</code> 的赏金，近几年公开的漏洞中严重并且有详情的也不多，比如之前的《CVE-2017-11151 - Synology Photo Station Unauthenticated Remote Code Execution》 <a href="https://www.seebug.org/vuldb/ssvid-96331" title="Synology Photo Station Unauthenticated Remote Code Execution" target="_blank" rel="noopener">【2】</a>。</p>
 <p>Audio Station 这个漏洞品相着实有点好，经验证发现无需认证即可利用，虽然开了 ASLR 也不需要爆破，一个请求即可实现稳定 RCE。</p>
@@ -473,11 +472,12 @@
 <p>然后就是 gdb attach 到 Web 服务程序进行实际漏洞利用调试了，可使用以下代码替换 <code>audiotransfer.cgi</code> ，方便确认 Payload 是否被修改，以及通过 <code>/proc/$pid/stat</code> 得到父进程的 pid。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, getenv(<span class="string">"REQUEST_URI"</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, getenv(<span class="string">"HTTP_USER_AGENT"</span>));</span><br><span class="line">    sleep(<span class="number">1000000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/852d6c2f847f5dba0a562b5ac6718fc0c960d9c8" alt=""></p>
-<h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>通过 ZoomEye 网络空间搜索引擎对关键字 app:”Synology NAS storage-misc httpd” 进行搜索，共发现 10154041 条 Synology NAS 的 IP 历史记录，主要分布在中国、德国<a href="https://www.zoomeye.org/searchResult?q=app%3A%22Synology%20NAS%20storage-misc%20httpd%22" title="ZoomEye 网络空间搜索引擎" target="_blank" rel="noopener">【3】</a>。安装了Audio Station 套件且版本 <code>&lt; 6.5.6-3377</code> 的会受到该漏洞影响。</p>
+<h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>通过 ZoomEye 网络空间搜索引擎对关键字 app:”Synology NAS storage-misc httpd” 进行搜索，共发现 10154041 条 Synology NAS 的 IP 历史记录，主要分布在中国、德国<a href="https://www.zoomeye.org/searchResult?q=app%3A%22Synology%20NAS%20storage-misc%20httpd%22" title="ZoomEye 网络空间搜索引擎" target="_blank" rel="noopener">【3】</a>。安装了Audio Station 套件且版本 <code>&lt; 6.5.4-3367</code> 的会受到该漏洞影响。</p>
 <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/0081e0d77bb4d35313a80ab78d2947b4f74df030" alt=""></p>
 <p>从 ZoomEye 随机抽取 10000 的目标进行漏洞检测，成功率为 <code>127/10000</code>。<br><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/synology_audio_station_pre-auth_rce/9f9a95f9eb6b8c86f2f6446abf1181aa9b2c7c94" alt=""></p>
-<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p>【1】: Synology 安全公告</p>
-<p><a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_21_05" target="_blank" rel="noopener">https://www.synology.com/zh-tw/security/advisory/Synology_SA_21_05</a></p>
+<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>Synology 官方没有发布该漏洞的安全公告，之前的文章引用了错误的链接及影响版本，实际影响版本为 <code>&lt; 6.5.4-3367</code>（修复版本），感谢 swing 师傅指正 :)</p>
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p>【1】: Synology 官网</p>
+<p><a href="https://www.synology.com/" target="_blank" rel="noopener">https://www.synology.com/</a></p>
 <p>【2】: Synology Photo Station Unauthenticated Remote Code Execution</p>
 <p><a href="https://www.seebug.org/vuldb/ssvid-96331" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-96331</a></p>
 <p>【3】: ZoomEye 网络空间搜索引擎</p>
@@ -724,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞分析"><span class="nav-number">3.</span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试及-EXP-构造"><span class="nav-number">4.</span> <span class="nav-text">调试及 EXP 构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#影响范围"><span class="nav-number">5.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关链接"><span class="nav-number">6.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞分析"><span class="nav-number">3.</span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试及-EXP-构造"><span class="nav-number">4.</span> <span class="nav-text">调试及 EXP 构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#影响范围"><span class="nav-number">5.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#致谢"><span class="nav-number">6.</span> <span class="nav-text">致谢</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关链接"><span class="nav-number">7.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
             
 
           </div>
