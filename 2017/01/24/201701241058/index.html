@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="proxy,raspberry pi," />
+  <meta name="keywords" content="raspberry pi,proxy," />
 
 
 
@@ -79,14 +79,14 @@
 
 
 
-<meta name="keywords" content="proxy,raspberry pi">
+<meta name="keywords" content="raspberry pi,proxy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用树莓派打造科学上网神器">
 <meta property="og:url" content="https://0x43434343.com/2017/01/24/201701241058/index.html">
 <meta property="og:site_name" content="fenix&#39;s blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
-<meta property="og:updated_time" content="2021-06-11T13:57:08.461Z">
+<meta property="og:updated_time" content="2021-06-11T14:23:26.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用树莓派打造科学上网神器">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
@@ -459,7 +459,7 @@
 <p>之后运行 <code>sudo hostapd -d /etc/hostapd/hostapd/conf</code> 来测试，如有 bug 自行 google 调试。<br>调试成功后编辑 /etc/default/hostapd，更改 DAEMON_CONF=”/etc/hostapd/hostapd.conf”，然后运行 sudo service hostapd start 正式启动 wifi 热点。</p>
 <h1 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h1><p>参照 <a href="http://www.jianshu.com/p/6b8c8d30a40a" target="_blank" rel="noopener">linux 全局代理 redsocks+shadowsocks</a><br>之后学习 <a href="http://www.cnblogs.com/metoy/p/4320813.html" target="_blank" rel="noopener">iptables 详解</a>可将需要 fq 的流量通过 NAT 重定向到 redsocks，请自定义 iptables 规则。</p>
 <h1 id="保存防火墙规则及配置开机自启服务"><a href="#保存防火墙规则及配置开机自启服务" class="headerlink" title="保存防火墙规则及配置开机自启服务"></a>保存防火墙规则及配置开机自启服务</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install iptables-persistent</span><br><span class="line">$ sudo service netfilter-persistent save</span><br></pre></td></tr></table></figure>
-<p>编辑 /etc/rc.local<br>写入以下内容</p>
+<p>编辑 /etc/rc.local，写入以下内容：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo service dnsmasq restart</span><br><span class="line">sudo sysctl -p</span><br><span class="line">sudo service hostapd start</span><br><span class="line">sudo service redsocks start</span><br><span class="line">iptables-restore &lt; /etc/iptables/rules.v4</span><br></pre></td></tr></table></figure>
 
       
@@ -511,9 +511,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/proxy/" rel="tag"># proxy</a>
-          
             <a href="/tags/raspberry-pi/" rel="tag"># raspberry pi</a>
+          
+            <a href="/tags/proxy/" rel="tag"># proxy</a>
           
         </div>
       
@@ -735,7 +735,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.7k</span>
+    <span title="Site words total count">80.4k</span>
   
 </div>
 

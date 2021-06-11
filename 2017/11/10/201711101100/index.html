@@ -81,15 +81,15 @@
 
 <meta name="keywords" content="raspberry pi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Raspberrypi 多种联网方法">
+<meta property="og:title" content="Raspberry Pi 多种连接方法">
 <meta property="og:url" content="https://0x43434343.com/2017/11/10/201711101100/index.html">
 <meta property="og:site_name" content="fenix&#39;s blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/get-started-with-raspberry-pi/fe758eb066a7dcae8c8efa88274301e1dfa25ab4">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/get-started-with-raspberry-pi/ece9ddca83fd7c44fd58b758fde4849c56cada42">
-<meta property="og:updated_time" content="2021-06-11T07:29:27.399Z">
+<meta property="og:updated_time" content="2021-06-11T14:52:42.384Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Raspberrypi 多种联网方法">
+<meta name="twitter:title" content="Raspberry Pi 多种连接方法">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/get-started-with-raspberry-pi/fe758eb066a7dcae8c8efa88274301e1dfa25ab4">
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>Raspberrypi 多种联网方法 | fenix's blog</title>
+  <title>Raspberry Pi 多种连接方法 | fenix's blog</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Raspberrypi 多种联网方法</h1>
+          <h1 class="post-title" itemprop="name headline">Raspberry Pi 多种连接方法</h1>
         
 
         <div class="post-meta">
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  416
+                  415
                 </span>
               
 
@@ -430,15 +430,15 @@
         <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/get-started-with-raspberry-pi/fe758eb066a7dcae8c8efa88274301e1dfa25ab4" alt=""></p>
 <a id="more"></a>
 <blockquote>
-<p>针对 Raspberrypi 3 Model B，其他型号同理。</p>
+<p>针对 raspberry pi 3 model B，其他型号同理。</p>
 </blockquote>
 <h1 id="初次联机"><a href="#初次联机" class="headerlink" title="初次联机"></a>初次联机</h1><h2 id="使用串口通信的方式"><a href="#使用串口通信的方式" class="headerlink" title="使用串口通信的方式"></a>使用串口通信的方式</h2><p><code>GPIO</code> 管脚图如下所示</p>
 <p><img src="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/get-started-with-raspberry-pi/ece9ddca83fd7c44fd58b758fde4849c56cada42" alt=""></p>
 <p>具体可参考 <a href="https://spellfoundry.com/2016/05/29/configuring-gpio-serial-port-raspbian-jessie-including-pi-3/" target="_blank" rel="noopener">Configuring The GPIO Serial Port On Raspbian Jessie Including Pi 3</a></p>
-<h2 id="路由器-DHCP"><a href="#路由器-DHCP" class="headerlink" title="路由器 DHCP"></a>路由器 DHCP</h2><p>利用网线直连路由器，查看路由器 DHCP 信息，SSH 连接即可。(新版默认不开启 SSH，在内存卡上根目录新建个文件名为 ssh 的空白文件就好 )</p>
-<h2 id="和笔记本连接"><a href="#和笔记本连接" class="headerlink" title="和笔记本连接"></a>和笔记本连接</h2><p>利用网线和笔记本直连，可分配静态 IP，也可以在笔记本上安装 dnsmasp 实现和路由器同样的 DHCP 功能，重点说下怎么在两边同时配置静态 IP。<br>编辑内存卡根目录下的 cmdline.txt 文件，打开之后，在最后的位置追加一个IP如下：</p>
+<h2 id="路由器-DHCP"><a href="#路由器-DHCP" class="headerlink" title="路由器 DHCP"></a>路由器 DHCP</h2><p>利用网线直连路由器 lan 口，查看路由器 dhcp 信息，ssh 连接即可（新版默认不开启 ssh，在内存卡上根目录新建个文件名为 ssh 的空白文件就好）</p>
+<h2 id="和笔记本连接"><a href="#和笔记本连接" class="headerlink" title="和笔记本连接"></a>和笔记本连接</h2><p>利用网线和笔记本直连，可分配静态 IP，也可以在笔记本上安装 dnsmasp 实现和路由器同样的 dhcp 功能，重点说下怎么在两边同时配置静态 ip，编辑 TF 卡根目录下的 cmdline.txt 文件，在最后的位置追加如下内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... rootwait ip=192.168.1.1</span><br></pre></td></tr></table></figure>
-<p>保持笔记本的 IP 地址和树莓派在同一网段 102.168.1.2/24 即可。</p>
+<p>保持笔记本的 IP 地址和树莓派在同一网段 192.168.1.2/24 后 ssh 即可。</p>
 <h1 id="连接-PEAP-企业网络"><a href="#连接-PEAP-企业网络" class="headerlink" title="连接 PEAP 企业网络"></a>连接 PEAP 企业网络</h1><p>连接普通网络就不多说了，重点说下树莓派怎么连接 PEAP 企业认证网络。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /etc/network/interface &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">auto wlan0</span><br><span class="line">iface wlan0 inet dhcp</span><br><span class="line">wpa_conf /etc/wpa_supplicant/wpa_supplicant.conf</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; /etc/wpa_supplicant/wpa_supplicant.conf &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">country=CN</span><br><span class="line">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev</span><br><span class="line">update_config=1</span><br><span class="line"></span><br><span class="line">network=&#123;</span><br><span class="line">ssid=<span class="string">"SSID"</span></span><br><span class="line">priority=1</span><br><span class="line">proto=RSN</span><br><span class="line">key_mgmt=WPA-EAP</span><br><span class="line">auth_alg=OPEN</span><br><span class="line">eap=PEAP</span><br><span class="line">identity=<span class="string">"USERNAME"</span></span><br><span class="line">password=<span class="string">"PASSWORD"</span></span><br><span class="line">phase1=<span class="string">"peaplabel=0"</span></span><br><span class="line">phase2=<span class="string">"auth=GTC"</span></span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 <p>根据实际替换以上部分内容即可，可同时定义多个 network 字段，会按照优先级从大到小自动尝试连接。可预留很多备份方案，比如说手机热点等。</p>
@@ -468,12 +468,12 @@
 
         <li class="post-copyright-link">
           <strong>本文标题：</strong>
-          <a href="https://0x43434343.com/2017/11/10/201711101100/" title="Raspberrypi 多种联网方法">Raspberrypi 多种联网方法</a>
+          <a href="https://0x43434343.com/2017/11/10/201711101100/" title="Raspberry Pi 多种连接方法">Raspberry Pi 多种连接方法</a>
         </li>
 
         <li class="post-copyright-link">
           <strong>本文链接：</strong>
-          <a href="https://0x43434343.com/2017/11/10/201711101100/" title="Raspberrypi 多种联网方法">https://0x43434343.com/2017/11/10/201711101100/</a>
+          <a href="https://0x43434343.com/2017/11/10/201711101100/" title="Raspberry Pi 多种连接方法">https://0x43434343.com/2017/11/10/201711101100/</a>
         </li>
 
         <li class="post-copyright-date">
@@ -714,7 +714,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.7k</span>
+    <span title="Site words total count">80.4k</span>
   
 </div>
 
@@ -861,7 +861,7 @@
         var disqus_config = function () {
           this.page.url = 'https://0x43434343.com/2017/11/10/201711101100/';
           this.page.identifier = '2017/11/10/201711101100/';
-          this.page.title = 'Raspberrypi 多种联网方法';
+          this.page.title = 'Raspberry Pi 多种连接方法';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fenixns.disqus.com/embed.js';
