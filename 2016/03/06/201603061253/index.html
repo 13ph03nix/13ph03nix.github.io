@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的让人好无奈。加速姿势如下  更换中央仓库之前的 oschina 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。设置方法为打开 maven 的配置文件(~/.m2/setting.xml或其它)，在 setting.xml 文件的 mirrors 标签内添加以下内容。 123456&amp;lt;mirror&amp;gt;">
+<meta name="description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的一言难尽。加速方法如下">
 <meta name="keywords" content="maven">
 <meta property="og:type" content="article">
-<meta property="og:title" content="加速 maven 的下载速度">
+<meta property="og:title" content="加快 maven 的下载速度">
 <meta property="og:url" content="https://0x43434343.com/2016/03/06/201603061253/index.html">
 <meta property="og:site_name" content="fenix&#39;s blog">
-<meta property="og:description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的让人好无奈。加速姿势如下  更换中央仓库之前的 oschina 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。设置方法为打开 maven 的配置文件(~/.m2/setting.xml或其它)，在 setting.xml 文件的 mirrors 标签内添加以下内容。 123456&amp;lt;mirror&amp;gt;">
+<meta property="og:description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的一言难尽。加速方法如下">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-06-11T03:29:09.025Z">
+<meta property="og:updated_time" content="2021-06-11T04:21:09.761Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="加速 maven 的下载速度">
-<meta name="twitter:description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的让人好无奈。加速姿势如下  更换中央仓库之前的 oschina 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。设置方法为打开 maven 的配置文件(~/.m2/setting.xml或其它)，在 setting.xml 文件的 mirrors 标签内添加以下内容。 123456&amp;lt;mirror&amp;gt;">
+<meta name="twitter:title" content="加快 maven 的下载速度">
+<meta name="twitter:description" content="maven 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的一言难尽。加速方法如下">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>加速 maven 的下载速度 | fenix's blog</title>
+  <title>加快 maven 的下载速度 | fenix's blog</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">加速 maven 的下载速度</h1>
+          <h1 class="post-title" itemprop="name headline">加快 maven 的下载速度</h1>
         
 
         <div class="post-meta">
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  375
+                  354
                 </span>
               
 
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  2
+                  1
                 </span>
               
             </div>
@@ -427,17 +427,15 @@
       
 
       
-        <a id="more"></a>
-<blockquote>
-<p><code>maven</code> 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的让人好无奈。加速姿势如下</p>
-</blockquote>
-<h1 id="更换中央仓库"><a href="#更换中央仓库" class="headerlink" title="更换中央仓库"></a>更换中央仓库</h1><p>之前的 <code>oschina</code> 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。<br>设置方法为打开 maven 的配置文件(~/.m2/setting.xml或其它)，在 setting.xml 文件的 mirrors 标签内添加以下内容。</p>
+        <p><code>maven</code> 作为一个项目管理工具着实好用，然而它在国内下载依赖包的速度真的一言难尽。加速方法如下</p>
+<a id="more"></a>
+<h1 id="更换中央仓库"><a href="#更换中央仓库" class="headerlink" title="更换中央仓库"></a>更换中央仓库</h1><p>之前的 <code>oschina</code> 仓库貌似用不了，幸好阿里也公开了一个中央仓库，亲测可用。<br>设置方法为打开 maven 的配置文件（<code>~/.m2/setting.xml</code> 或其它），在 <code>setting.xml</code> 文件的 mirrors 标签内添加以下内容。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="使用海外代理加速"><a href="#使用海外代理加速" class="headerlink" title="使用海外代理加速"></a>使用海外代理加速</h1><p>代理设置方法请参考：<br>设置方法为打开 maven 的配置文件(~/.m2/setting.xml 或其它)，在 setting.xml 文件的 proxies 标签内添加以下内容(请根据实际情况补充标签内配置信息）。</p>
+<h1 id="使用海外代理加速"><a href="#使用海外代理加速" class="headerlink" title="使用海外代理加速"></a>使用海外代理加速</h1><p>在 setting.xml 文件的 proxies 标签内添加以下内容（请根据实际情况补充标签内配置信息）。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">proxy</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span><span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">active</span>&gt;</span><span class="tag">&lt;/<span class="name">active</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">protocol</span>&gt;</span><span class="tag">&lt;/<span class="name">protocol</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span><span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">host</span>&gt;</span><span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">port</span>&gt;</span><span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">nonProxyHosts</span>&gt;</span><span class="tag">&lt;/<span class="name">nonProxyHosts</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">proxy</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>参数介绍</p>
-<p>id：代理的名称<br>active：表示该代理是否激活<br>protocol：代理协议<br>username：当代理需要认证时的用户名<br>password：当代理需要认证时的密码<br>host：代理的IP地址<br>port：代理的端口号<br>nonProxyHost：指定不需要使用代理的主机，可不设置。如果有多个，用 | 分隔<br>（备注：如果代理不需要用户认证，username 和 password　两个节点可注释掉）</p>
-<p>为确保配置文件生效，可使用 mvn -gs ~/.m2/setting.xml，享受风一般的速度吧～</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">id：代理的名称</span><br><span class="line">active：表示该代理是否激活</span><br><span class="line">protocol：代理协议</span><br><span class="line">username：当代理需要认证时的用户名</span><br><span class="line">password：当代理需要认证时的密码</span><br><span class="line">host：代理的IP地址</span><br><span class="line">port：代理的端口号</span><br><span class="line">nonProxyHost：指定不需要使用代理的主机，可不设置。如果有多个，用 | 分隔</span><br><span class="line">（注：如果代理不需要用户认证，username 和 password　两个节点可注释掉）</span><br></pre></td></tr></table></figure>
+<p>为确保配置文件生效，可使用 <code>mvn -gs ~/.m2/setting.xml</code>，享受风一般的速度吧～</p>
 
       
     </div>
@@ -464,12 +462,12 @@
 
         <li class="post-copyright-link">
           <strong>本文标题：</strong>
-          <a href="https://0x43434343.com/2016/03/06/201603061253/" title="加速 maven 的下载速度">加速 maven 的下载速度</a>
+          <a href="https://0x43434343.com/2016/03/06/201603061253/" title="加快 maven 的下载速度">加快 maven 的下载速度</a>
         </li>
 
         <li class="post-copyright-link">
           <strong>本文链接：</strong>
-          <a href="https://0x43434343.com/2016/03/06/201603061253/" title="加速 maven 的下载速度">https://0x43434343.com/2016/03/06/201603061253/</a>
+          <a href="https://0x43434343.com/2016/03/06/201603061253/" title="加快 maven 的下载速度">https://0x43434343.com/2016/03/06/201603061253/</a>
         </li>
 
         <li class="post-copyright-date">
@@ -710,7 +708,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">88.3k</span>
+    <span title="Site words total count">87.9k</span>
   
 </div>
 
@@ -857,7 +855,7 @@
         var disqus_config = function () {
           this.page.url = 'https://0x43434343.com/2016/03/06/201603061253/';
           this.page.identifier = '2016/03/06/201603061253/';
-          this.page.title = '加速 maven 的下载速度';
+          this.page.title = '加快 maven 的下载速度';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fenixns.disqus.com/embed.js';
