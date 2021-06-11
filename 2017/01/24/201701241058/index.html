@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="fenix&#39;s blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
-<meta property="og:updated_time" content="2021-06-11T13:38:24.388Z">
+<meta property="og:updated_time" content="2021-06-11T13:57:08.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用树莓派打造科学上网神器">
 <meta name="twitter:image" content="https://0x43434343-1259151589.cos.ap-beijing.myqcloud.com/raspberry-pi-3-model-b-build-a-scientific-internet-router/1835b9310a8f23d216a172aae70e58c08ea4a3ec">
@@ -436,14 +436,14 @@
 <li>支持 AP 模式的 USB 无线网卡</li>
 <li>A computer</li>
 </ul>
-<h1 id="树莓派刷-kali"><a href="#树莓派刷-kali" class="headerlink" title="树莓派刷 kali"></a>树莓派刷 kali</h1><p>一直有黑客的情怀，果断刷了 <a href="https://images.offensive-security.com/arm-images/kali-2.1.2-rpi2.img.xz" target="_blank" rel="noopener">kali</a>，下载镜像解压后利用 <a href="http://shumeipai.nxez.com/2013/08/31/usb-image-tool.html" target="_blank" rel="noopener">USB Image Tool</a> 写入即可。</p>
+<h1 id="树莓派刷-kali"><a href="#树莓派刷-kali" class="headerlink" title="树莓派刷 kali"></a>树莓派刷 kali</h1><p>一直有黑客的情怀，果断刷了 <a href="https://images.offensive-security.com/arm-images/kali-2.1.2-rpi2.img.xz" target="_blank" rel="noopener">kali</a>，下载镜像解压后利用 <a href="https://www.alexpage.de/usb-image-tool/" target="_blank" rel="noopener">USB Image Tool</a> 写入即可。</p>
 <h1 id="如何连接"><a href="#如何连接" class="headerlink" title="如何连接"></a>如何连接</h1><p>此处有几种不同情形（kali 初始认证，username: root, password: toor)</p>
 <ul>
 <li>假如你正好有一台显示屏，那再好不过了，将树莓派和显示屏连接，将其当成一般的电脑使用即可</li>
 <li>无显示屏，有路由器，将树莓派接在路由器的 lan 接口，dhcp 分配 ip 然后 ssh</li>
 <li>无显示屏，无路由器，将 TF 卡插到读卡器连上电脑， 打开 boot 磁盘下的 cmdline.txt 文件在文末追加 <code>ip = 192.168.2.1</code>，然后电脑设置静态 ip <code>192.168.2.2/24</code>，有线直连树莓派后 ssh</li>
 </ul>
-<p>登陆成功后，需对系统进行一些设置以方便以后连接，可参考 <a href="http://imchao.wang/2014/01/02/make-you-raspberrypi-auto-connect-to-wifi/" target="_blank" rel="noopener">让你的树莓派自动连接wifi</a>。</p>
+<p>登陆成功后，需对系统进行一些设置以方便以后连接，可参考 <a href="http://imchao.wang/2014/01/02/make-you-raspberrypi-auto-connect-to-wifi/" target="_blank" rel="noopener">让你的树莓派自动连接 wifi</a>。</p>
 <h1 id="打造中继路由器"><a href="#打造中继路由器" class="headerlink" title="打造中继路由器"></a>打造中继路由器</h1><p>将准备好的无线适配器插到树莓派。</p>
 <h2 id="设置-DHCP-服务"><a href="#设置-DHCP-服务" class="headerlink" title="设置 DHCP 服务"></a>设置 DHCP 服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install dnsmasq</span><br></pre></td></tr></table></figure>
 <p>编辑 <code>/etc/dnsmasq.conf</code>，添加以下内容：</p>
@@ -735,7 +735,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.6k</span>
+    <span title="Site words total count">80.3k</span>
   
 </div>
 
